@@ -58,7 +58,7 @@ Old framing (small startups + cost-saving) collapsed under two rebuttals → swi
 
 - **Structure: The Market Shift (Raskin)** — no traction, so push the market shift.
 - **Flow:** title → Shift (spend-decider shifts human→model) → Villain (after-the-fact dashboards, static keys) → incident evidence ($4.2K–$500M) → Promised Land → Vehicle (solution) → demo → customer → market → competition → moat → BM/pricing → GTM → traction → team → finance/Ask.
-- **⚠️ Unfinished:** solution (slides 6–7) not locked = biggest task. Ask amount/use TBD.
+- **Solution slides 6–8 = drafted** in `Solution/스토리라인-통합-Problem-Solution.md` (COGS-lead flow; tech reworded to in-path policy engine / semantic attribution / dynamic routing = by-product; moat = data accumulation). Still needs interview numbers + team sign-off on off-path vs in-path. Ask amount/use TBD.
 - **3 mandatory rebuttals:** "just buy tokens" / "build it yourself" / "what if OpenAI does it" (answers §1·§3).
 - **Finance slide = revenue (hockey stick) only. Drop cost/net income** (7/21 class). Purpose = land a 2nd meeting.
 - **20-min discipline:** target 10-min talk (filling all 20 = penalty) + 8–10 min Q&A (score via the 3 rebuttals).
@@ -74,15 +74,15 @@ Old framing (small startups + cost-saving) collapsed under two rebuttals → swi
 
 ## 5. Status & next
 
-**Status:** Problem · Why Now · competition · ICP · personas · market research (verified) · positioning reset · pitch-narrative worksheet = done. Interviews = 0. Solution form = undecided.
-Repo `WTIA_AI_Cost_Gov` (github.com/jmormalik/WTIA_AI_Cost_Gov, SSH) created + teammate 태원 invited as collaborator, but **not yet pushed** (sandbox can't push — user must run push locally). Notion 검증본 enriched to full depth. Context files (CLAUDE.md, _START_HERE.md) converted to English.
+**Status:** Problem · Why Now · competition · ICP · personas · market research (verified) · positioning reset · pitch-narrative worksheet = done. **Pitch storyline (Problem→Solution, slides 3–8) + COGS dashboard prototype + Seattle-VC pitch script (Notion) + mentor-Q&A brief for Gemini = done (2026-07-23).** Interviews = 0 (still the #1 bottleneck). Solution form (off-path report vs in-path proxy) = still needs team sign-off.
+Repo `WTIA_AI_Cost_Gov` (github.com/jmormalik/WTIA_AI_Cost_Gov, SSH) created, teammate 태원 invited, and **pushed to origin/main** (local git). Notion 검증본 enriched to full depth. Context files (CLAUDE.md, _START_HERE.md) in English (Korean output rule unchanged).
 
 **Next (priority):**
-1. **Push repo locally** (sandbox cannot): `cd ~/Desktop/WTIA/AI_cost_gov && rm -rf WTIA_AI_Cost_Gov && git init && git remote add origin git@github.com:jmormalik/WTIA_AI_Cost_Gov.git && git add . && git status` (confirm `_class-materials/` not listed) → commit → `git push -u origin main`. Teammate becomes contributor once they push a commit under their own GitHub email.
-2. **Decide solution form with team** (off-path report vs in-path proxy) — rest of deck depends on this
-3. **10–15 interviews** — life/death Qs: "what % of spend is tools/external API?" + "willing to put a proxy in the path?" + "at what spend level do you buy vs build?"
-4. **Week5 homework** (2 revenue models · pricing hypothesis · 6-quarter roadmap · 3–5yr financials) — templates in `_class-materials/Week 5 ... docx`, `_class-materials/Financial Forecast Template ... xlsx` (git-ignored folder)
-5. Assemble pitch deck draft
+1. **Decide solution form with team** (off-path report vs in-path proxy) — storyline assumes off-path→in-path; rest of deck depends on confirming this.
+2. **10–15 interviews** — life/death Qs: "what % of spend is tools/external API?" + "willing to put a proxy in the path?" + "at what spend level do you buy vs build?" Then swap the illustrative numbers in the storyline/dashboard/pitch-script for real data.
+3. **Week5 homework** (2 revenue models · pricing hypothesis · 6-quarter roadmap · 3–5yr financials) — templates in `_class-materials/Week 5 ... docx`, `_class-materials/Financial Forecast Template ... xlsx` (git-ignored folder).
+4. **Assemble pitch deck (.pptx)** — port `Solution/스토리라인-통합-Problem-Solution.md` into slides 3–8; embed the dashboard prototype as the demo slide.
+5. Keep repo + teammate in sync (teammate becomes contributor once they push a commit under their own GitHub email).
 
 ---
 
