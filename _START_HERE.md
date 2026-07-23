@@ -1,104 +1,104 @@
-# _START_HERE — Claude 컨텍스트 브리핑
+# _START_HERE — Claude context brief
 
-> **Claude에게:** 사용자가 이 아이디어/프로젝트로 호출하면 **이 파일만 먼저 읽고** 바로 작업을 시작한다. 다른 문서는 이 파일이 가리킬 때만 연다. 아이디어 관련 대화가 끝날 때마다 이 파일의 관련 섹션을 최신화한다(특히 "현재 상태", "다음 할 일", "결정 로그").
->
-> 마지막 업데이트: 2026-07-22
-
----
-
-## 0. 30초 요약
-
-- **주제:** AI 에이전트 비용 거버넌스. 에이전트가 스스로 호출하는 LLM·툴·외부 API 비용을 **실행 전에 요청 경로에서 통제**하고, 왜 막았는지 **감사급으로 설명**하는 레이어.
-- **한 줄:** "불난 뒤 CCTV가 아니라, 불붙기 전의 차단기."
-- **형태:** 팀 프로젝트(사용자 = 고객개발·GTM 담당, 팀원 = 기술 원조). WTIA 창업 교육 캡스톤 = **투자자 피치덱**.
-- **사용자의 진짜 목표:** 실제 창업 X. **이기는 피치덱**이 목적(안정적 + 번뜩임 + Q&A 방어 가능). 단 현실적 모델이어야 함.
-- **최대 병목:** 고객 인터뷰 **0건**. 모든 숫자(ACV·시장·재무)의 근거가 여기서 나옴.
+> **To Claude:** When invoked on this idea/project, read ONLY this file first, then start. Open other docs only when this file points to them. After every idea-related session, update this file (esp. "Status", "Next", "Decision log").
+> **Output language = Korean** (deliverables + chat). This brief is English for token economy only.
+> Last updated: 2026-07-23 (PDT)
 
 ---
 
-## 1. 확정된 포지셔닝 (2026-07 재설정)
+## 0. 30-sec summary
 
-기존(소규모 스타트업 + 절감)이 두 반론에 무너져서 아래로 전환:
-
-- **① ICP: 소규모 스타트업 → 중간 시장/스케일업** (월 AI 지출 $50K~$500K, 50~300명). 판별 기준: "Meta처럼 자체구축할 엔지니어는 없는데 스타트업보다 지출·감사 압박은 큰 회사." 한국 AI 스타트업(라이너·뤼튼·채널코퍼레이션 등)은 **무료 디자인 파트너**로.
-- **② 가치: 절감 → 원가 귀속·설명(COGS)**. "AI 비용 줄여드립니다" X → "AI 원가를 설명할 수 있게 해드립니다" O. (절감은 채택 인센티브와 싸우고 소규모 ROI 음수)
-- **③ 시장 스토리:** 한국 = 쐐기, 시장 = 글로벌 에이전트 인프라. **LAM $80k를 시장 규모로 내밀지 말 것.**
-
----
-
-## 2. 핵심 근거 숫자 (✅=피치 인용가능 / 🔵=출처만 / ❓=미검증)
-
-- ✅ 기업 AI 예산 초과 **79%** (DoiT 2026), **중간기업 81% > 대기업 76%**
-- ✅ AI Gateway 시장 $2.4B→$15B(2035), CAGR **~20%**
-- ✅ "지속가능 AI SaaS는 LLM 비용 < COGS 20%"
-- ✅ Uber 자체 게이트웨이(<40ms) — "기반이 있어야 만든다" = 우리 반론 탄약
-- ✅ Meta: Claudeonomics 리더보드 → tokenmaxxing → 연 수십억$ → AI Gateway 자체구축
-- 🔵 예산 초과 93%(McKinsey, 병기용) · DoorDash 자체구축(보조)
-- ⚠️ 스타트업 월 지출 실제 $500~5K(원문 $4~10K는 과대)
-- ❓ **한국 Build→Buy 임계점 $10~15K·0.2 FTE** ← 인터뷰 최우선 검증
+- **Topic:** AI agent cost governance. A layer that controls the LLM/tool/external-API spend an agent triggers on its own **in the request path, before execution**, and **explains (audit-grade) why it blocked**.
+- **One-liner:** "Not a CCTV after the fire — a breaker before it ignites."
+- **Form:** team project (user = customer dev/GTM, teammate = tech originator). WTIA capstone = **investor pitch deck**.
+- **User's real goal:** NOT to actually found a company. Goal = a **winning pitch** (stable + brilliant + Q&A-defensible), but the model must be realistic.
+- **Biggest bottleneck:** customer interviews = **0**. Every number (ACV/market/finance) traces back to this.
 
 ---
 
-## 3. 경쟁 & 리스크 (요약)
+## 1. Locked positioning (2026-07 reset)
 
-**경쟁 4레이어:** ①In-path 강제(SatGate=직접경쟁, LiteLLM=OSS 표준·한국 무료 자체호스팅 위협, Portkey) ②관측성(Langfuse·Helicone) ③FinOps/COGS(CloudZero·Vantage — 우리가 COGS 전면화 시 정면승부) ④에이전트 결제(Skyfire·Payman).
+Old framing (small startups + cost-saving) collapsed under two rebuttals → switched to:
 
-**치명 리스크 & 대책 (상세: `Problem/리스크-분석-및-대책.md`):**
-1. 플랫폼 흡수(OpenAI/Anthropic/Meta) → 답: 크로스벤더 중립 + 독립 감사(벤더 자기감사는 증거능력 없음)
-2. 신뢰↔데이터 순환 종속 → 답: **경로 밖 리포트로 시작**(프록시 X), 신뢰 얻은 뒤 경로 진입
-3. LiteLLM이 핵심 이미 커버 → 남은 쐐기(툴/외부API)가 10배인지 인터뷰 검증
-4. ROI 음수(소규모) / 자체구축(대기업) = 죽음의 계곡 → 답: 중간 시장 + COGS
-5. 인라인 프록시 레이턴시·SPOF → 답: 사이드카/비동기/bypass
-
-**차별화 후보(팀 논의):** Semantic ROI Kill-switch(헛도는 에이전트 감지 차단) — COGS보다 방어력 높음.
+- **① ICP: small startups → mid-market/scaleup** ($50K–$500K/mo AI spend, 50–300 ppl). Test: "no engineers to build in-house like Meta, but bigger spend/audit pressure than a startup." Korean AI startups (라이너·뤼튼·채널코퍼레이션) = **free design partners**.
+- **② Value: cost-saving → cost attribution/explanation (COGS).** "We cut your AI bill" ❌ → "We let you explain your AI unit cost" ✅. (Saving fights adoption incentives + negative ROI at small scale.)
+- **③ Market story:** Korea = wedge, market = global agent infra. **Do NOT present LAM $80k as market size.**
 
 ---
 
-## 4. 피치덱 방향 (7.23 수업 기준)
+## 2. Key evidence numbers (✅=pitch-citable / 🔵=source only / ⚠️=corrected / ❓=unverified)
 
-- **구조: The Market Shift (Raskin)** — 트랙션 없으니 시장 변화로 민다.
-- **플로우:** 타이틀 → Shift(지출 결정 주체가 사람→모델) → Villain(사후 대시보드·정적 키) → 사고 증거($4.2K~$500M) → Promised Land → Vehicle(솔루션) → 데모 → 고객 → 시장 → 경쟁 → Moat → BM/가격 → GTM → 트랙션 → 팀 → 재무·Ask.
-- **⚠️ 미완:** 솔루션(6·7번) 확정 안 됨 = 최대 과제. Ask 금액·용도 미정.
-- **반론 방어 3종 필수:** "토큰 사고 말지"/"직접 만들지"/"OpenAI가 하면" (답은 §1·§3 참고).
-- **재무 슬라이드 = 매출(하키스틱)만. 비용·순이익 빼라**(7/21 수업). 목적 = 2차 미팅 성사.
-- **20분 규율:** 발표 10분 목표(20분 꽉 채우면 감점) + Q&A 8~10분(반론 3종으로 점수).
-- 트랙션은 인터뷰 0건이라 **"디자인 파트너 N곳 + 인터뷰 결과"**로 대용, 목표 지표 = 순 마이너스 이탈.
-
-## 4-1. 일정 (역산)
-
-- **8/6, 8/10 피치 연습 · 8/11~12 최종 피치**(심사위원 4명, 20분 블록).
-- 8/13 프로그램 종료(네트워킹 해피아워). 다음 주 = Tech Week.
-- **D-day = 8/6.** 그 전에 ①솔루션 확정 ②인터뷰 ③덱 초안 필요.
+- ✅ Enterprise AI budget overrun **79%** (DoiT 2026), **mid-size 81% > large 76%**
+- ✅ AI Gateway market $2.4B→$15B (2035), CAGR **~20%**
+- ✅ "Sustainable AI SaaS keeps LLM cost < 20% of COGS"
+- ✅ Uber built own gateway (<40ms) — "you need a foundation to build it" = our rebuttal ammo
+- ✅ Meta: Claudeonomics leaderboard → tokenmaxxing → billions/yr → built own AI Gateway
+- 🔵 93% overrun (McKinsey, cite alongside) · DoorDash in-house (secondary)
+- ⚠️ Startup real spend $500–5K (原 $4–10K overstated)
+- ❓ **Korea Build→Buy threshold $10–15K · 0.2 FTE** ← top interview-verify target
 
 ---
 
-## 5. 현재 상태 & 다음 할 일
+## 3. Competition & risk (summary)
 
-**상태:** 문제·Why Now·경쟁·ICP·페르소나·시장조사(검증)·포지셔닝재설정·피치내러티브 워크시트 = 완료. 인터뷰 0건. 솔루션 형태 미확정.
+**4 competitive layers:** ① In-path enforcement (SatGate = direct; LiteLLM = OSS standard + Korea free self-host threat; Portkey) ② Observability (Langfuse·Helicone) ③ FinOps/COGS (CloudZero·Vantage — head-on if we lead with COGS) ④ Agent payments (Skyfire·Payman).
 
-**다음 할 일 (우선순위):**
-1. 팀과 **솔루션 형태 결정** (경로 밖 리포트 vs 경로 안 프록시) — 덱의 나머지가 여기 종속
-2. **인터뷰 10~15건** — 생사질문: "툴/외부API가 지출의 몇 %?" + "경로에 프록시 넣을 의향?" + "어느 지출 규모에서 구매 vs 자체구축?"
-3. **Week5 숙제** (수익모델 2개·가격 가설·6분기 로드맵·3~5년 재무 예측) — 템플릿은 `_class-materials/Week 5 ... docx`, `_class-materials/Financial Forecast Template ... xlsx` (git 무시 폴더)
-4. 피치덱 초안 조립
+**Fatal risks & counters (detail: `Problem/리스크-분석-및-대책.md`):**
+1. Platform absorption (OpenAI/Anthropic/Meta) → cross-vendor neutrality + independent audit (vendor self-audit = no evidentiary weight)
+2. Trust↔data circular dependency → **start with off-path reports** (no proxy), enter path after earning trust
+3. LiteLLM already covers the core → interview-verify whether remaining wedge (tools/external API) is 10x
+4. Negative ROI (small) / build in-house (large) = death valley → answer: mid-market + COGS
+5. Inline proxy latency/SPOF → sidecar/async/bypass
 
----
-
-## 6. 문서 지도 (필요할 때만 열기)
-
-- **아이디어/전략:** `Problem/문제-정의.md`, `Problem/why-now.md`, `Problem/리스크-분석-및-대책.md`, `Solution/포지셔닝-재설정.md`, `Solution/moat-후보.md`
-- **고객:** `ICP/ICP.md`, `Buyer-Persona/01-CTO-공동창업자.md`, `Buyer-Persona/02-AI-리드-챔피언.md`
-- **경쟁/시장:** `시장조사.md`(검증본), `Competitor-Analysis/*.md`, `Market/TAM-SAM-SOM.md`
-- **인터뷰:** `Interview/인터뷰-가이드-Mom-Test.md`, `Interview/인터뷰-후보-리스트.md`, `Interview/아웃리치-이메일-초안.md`
-- **우리 산출물:** `deliverables/Pitch_Narrative_Worksheet_채움.docx`, `deliverables/Week3_숙제_채움.docx`, `deliverables/Competitive_Analysis_AI_Cost_Governance.xlsx`
-- **강의 자료(git 무시, 로컬 참고):** `_class-materials/` — 강의 pptx·멘토 PDF·빈 과제 템플릿
-- **노션 허브:** https://app.notion.com/p/3a4b5f428bfd81eea734fbb1b73c86c2
+**Differentiation candidate (team debate):** Semantic ROI Kill-switch (detect + block agents spinning uselessly) — more defensible than COGS.
 
 ---
 
-## 7. 결정 로그 (시간순 — 새 결정마다 추가)
+## 4. Pitch deck direction (per 7.23 class)
 
-- 2026-07 초: 원래 개인 아이디어 = 가짜뉴스 탐지 API (아카이브). 법적 리스크(저작권·명예훼손) + "진실 정의" 난제로 보류.
-- 2026-07: 팀 합류 → AI 에이전트 비용 거버넌스로 전환. 사용자 역할 = 고객개발·GTM.
-- 2026-07-22: 포지셔닝 재설정(중간 시장 × COGS). 근거 = Meta 사례 + ROI/자체구축 반론.
-- 2026-07-22: 시장조사 교차검증 완료, 검증 태그 부착. 79%·CAGR20%·Uber·중간기업81%·COGS20% = 피치 인용 확정.
+- **Structure: The Market Shift (Raskin)** — no traction, so push the market shift.
+- **Flow:** title → Shift (spend-decider shifts human→model) → Villain (after-the-fact dashboards, static keys) → incident evidence ($4.2K–$500M) → Promised Land → Vehicle (solution) → demo → customer → market → competition → moat → BM/pricing → GTM → traction → team → finance/Ask.
+- **⚠️ Unfinished:** solution (slides 6–7) not locked = biggest task. Ask amount/use TBD.
+- **3 mandatory rebuttals:** "just buy tokens" / "build it yourself" / "what if OpenAI does it" (answers §1·§3).
+- **Finance slide = revenue (hockey stick) only. Drop cost/net income** (7/21 class). Purpose = land a 2nd meeting.
+- **20-min discipline:** target 10-min talk (filling all 20 = penalty) + 8–10 min Q&A (score via the 3 rebuttals).
+- Traction: with 0 interviews, substitute **"N design partners + interview findings"**, target metric = net-negative churn.
+
+## 4-1. Schedule (backward)
+
+- **8/6, 8/10 pitch practice · 8/11–12 final pitch** (4 judges, 20-min blocks).
+- 8/13 program ends (networking happy hour). Next week = Tech Week.
+- **D-day = 8/6.** Before it: ① lock solution ② interviews ③ deck draft.
+
+---
+
+## 5. Status & next
+
+**Status:** Problem · Why Now · competition · ICP · personas · market research (verified) · positioning reset · pitch-narrative worksheet = done. Interviews = 0. Solution form = undecided.
+
+**Next (priority):**
+1. **Decide solution form with team** (off-path report vs in-path proxy) — rest of deck depends on this
+2. **10–15 interviews** — life/death Qs: "what % of spend is tools/external API?" + "willing to put a proxy in the path?" + "at what spend level do you buy vs build?"
+3. **Week5 homework** (2 revenue models · pricing hypothesis · 6-quarter roadmap · 3–5yr financials) — templates in `_class-materials/Week 5 ... docx`, `_class-materials/Financial Forecast Template ... xlsx` (git-ignored folder)
+4. Assemble pitch deck draft
+
+---
+
+## 6. Doc map (open only when needed)
+
+- **Idea/strategy:** `Problem/문제-정의.md`, `Problem/why-now.md`, `Problem/리스크-분석-및-대책.md`, `Solution/포지셔닝-재설정.md`, `Solution/moat-후보.md`
+- **Customer:** `ICP/ICP.md`, `Buyer-Persona/01-CTO-공동창업자.md`, `Buyer-Persona/02-AI-리드-챔피언.md`, `Buyer-Persona/이해관계자-맵.md`
+- **Competition/market:** `시장조사.md` (verified), `Competitor-Analysis/*.md`, `Market/TAM-SAM-SOM.md`
+- **Interview:** `Interview/인터뷰-가이드-Mom-Test.md`, `Interview/인터뷰-후보-리스트.md`, `Interview/아웃리치-이메일-초안.md`
+- **Our deliverables:** `deliverables/Pitch_Narrative_Worksheet_채움.docx`, `deliverables/Week3_숙제_채움.docx`, `deliverables/Competitive_Analysis_AI_Cost_Governance.xlsx`
+- **Class materials (git-ignored, local ref):** `_class-materials/` — lecture pptx · mentor PDF · blank homework templates
+- **Notion hub:** https://app.notion.com/p/3a4b5f428bfd81eea734fbb1b73c86c2
+
+---
+
+## 7. Decision log (chronological — append each new decision)
+
+- 2026-07 early: original solo idea = fake-news detector API (archived). Shelved for legal risk (copyright/defamation) + "defining truth" problem.
+- 2026-07: joined team → pivot to AI agent cost governance. User role = customer dev/GTM.
+- 2026-07-22: positioning reset (mid-market × COGS). Basis = Meta case + ROI/build-in-house rebuttals.
+- 2026-07-22: market research cross-verified, tags applied. 79% · CAGR20% · Uber · mid-size 81% · COGS20% = locked as pitch-citable.
