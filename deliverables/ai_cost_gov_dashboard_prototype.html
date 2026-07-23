@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Cost Governance — Live Console (Prototype)</title>
+<style>
+  :root{
+    --surface-1:#1a1a19; --surface-2:#212120; --page:#0d0d0d;
+    --text-primary:#ffffff; --text-secondary:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --baseline:#383835; --border:rgba(255,255,255,0.10);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
+    --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
+    --success-text:#0ca30c;
+    --font: system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--page); color:var(--text-primary);
+    font-family:var(--font); -webkit-font-smoothing:antialiased;
+    font-size:14px; line-height:1.45;
+  }
+  .wrap{max-width:1160px; margin:0 auto; padding:20px 22px 40px;}
+  /* ---- top bar ---- */
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:16px; border-bottom:1px solid var(--border); margin-bottom:20px;}
+  .brand{display:flex; align-items:center; gap:11px;}
+  .logo{width:30px; height:30px; border-radius:8px; background:linear-gradient(135deg,var(--s1),var(--s3)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; color:#fff;}
+  .brand h1{font-size:15px; margin:0; font-weight:650; letter-spacing:-0.01em;}
+  .brand .sub{font-size:11.5px; color:var(--muted); margin-top:1px;}
+  .topright{display:flex; align-items:center; gap:16px; font-size:12px; color:var(--text-secondary);}
+  .live{display:flex; align-items:center; gap:6px; color:var(--good); font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:0.04em;}
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--good); box-shadow:0 0 0 0 rgba(12,163,12,0.5); animation:pulse 2s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(12,163,12,0.45);}70%{box-shadow:0 0 0 7px rgba(12,163,12,0);}100%{box-shadow:0 0 0 0 rgba(12,163,12,0);}}
+  .org{padding:4px 10px; border:1px solid var(--border); border-radius:7px; background:var(--surface-1);}
+  .banner{font-size:11px; color:var(--muted); background:var(--surface-1); border:1px solid var(--border); border-radius:8px; padding:7px 12px; margin-bottom:18px; display:flex; gap:8px; align-items:center;}
+  /* ---- KPI row ---- */
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:14px;}
+  .tile{background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:15px 16px;}
+  .tile .label{font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:9px; display:flex; align-items:center; gap:6px;}
+  .tile .val{font-size:27px; font-weight:680; letter-spacing:-0.02em; line-height:1;}
+  .tile .val small{font-size:14px; color:var(--text-secondary); font-weight:500;}
+  .tile .meta{font-size:12px; color:var(--text-secondary); margin-top:8px; display:flex; align-items:center; gap:6px;}
+  .up{color:var(--success-text); font-weight:600;} .down{color:var(--critical); font-weight:600;}
+  .chip{font-size:10.5px; padding:2px 7px; border-radius:20px; font-weight:600;}
+  .chip.good{background:rgba(12,163,12,0.14); color:#3cc73c;}
+  .chip.warn{background:rgba(250,178,25,0.14); color:var(--warning);}
+  .chip.crit{background:rgba(208,59,59,0.16); color:#ef6d6d;}
+  /* ---- panels ---- */
+  .cols{display:grid; grid-template-columns:1.05fr 0.95fr; gap:12px; margin-bottom:12px;}
+  .panel{background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:16px 17px;}
+  .panel h2{font-size:13px; margin:0 0 3px; font-weight:650; letter-spacing:-0.01em; display:flex; align-items:center; gap:7px;}
+  .panel .desc{font-size:11.5px; color:var(--muted); margin:0 0 15px;}
+  /* budget meters */
+  .meter-row{margin-bottom:14px;}
+  .meter-top{display:flex; justify-content:space-between; align-items:baseline; font-size:12.5px; margin-bottom:6px;}
+  .meter-top .name{font-weight:600;} .meter-top .name span{color:var(--muted); font-weight:400; font-size:11px; margin-left:5px;}
+  .meter-top .amt{font-variant-numeric:tabular-nums; color:var(--text-secondary); font-size:12px;}
+  .track{height:9px; border-radius:6px; background:var(--surface-2); overflow:hidden; position:relative; border:1px solid rgba(255,255,255,0.04);}
+  .fill{height:100%; border-radius:6px 0 0 6px;}
+  .limit-mark{position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--text-secondary); opacity:0.55;}
+  .meter-cap{font-size:11px; color:var(--muted); margin-top:5px; display:flex; align-items:center; gap:6px;}
+  .ic{width:13px; height:13px; display:inline-block; flex:none;}
+  /* block feed */
+  .feed{margin-top:4px; border-top:1px solid var(--border); padding-top:13px;}
+  .feed h3{font-size:11px; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); margin:0 0 10px;}
+  .evt{display:flex; gap:10px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:12px;}
+  .evt:last-child{border-bottom:none;}
+  .evt .tag{flex:none; font-size:10px; font-weight:700; padding:2px 7px; border-radius:5px; height:fit-content; letter-spacing:0.02em;}
+  .tag.blocked{background:rgba(208,59,59,0.16); color:#ef6d6d;}
+  .tag.throttled{background:rgba(250,178,25,0.15); color:var(--warning);}
+  .evt .body{color:var(--text-secondary);}
+  .evt .body b{color:var(--text-primary); font-weight:600;}
+  .evt .body .why{color:var(--muted); font-size:11px; margin-top:2px;}
+  .evt .t{margin-left:auto; color:var(--muted); font-size:11px; flex:none; font-variant-numeric:tabular-nums;}
+  /* routing */
+  .routebar{display:flex; height:34px; border-radius:8px; overflow:hidden; gap:2px; margin-bottom:14px;}
+  .routebar .seg{display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:650; color:#fff; min-width:0; white-space:nowrap;}
+  .rlegend{display:grid; grid-template-columns:1fr 1fr; gap:9px 16px;}
+  .rl{display:flex; align-items:center; gap:9px; font-size:12px;}
+  .sw{width:11px; height:11px; border-radius:3px; flex:none;}
+  .rl .nm{color:var(--text-primary);} .rl .nm small{color:var(--muted); display:block; font-size:10.5px;}
+  .rl .pct{margin-left:auto; font-variant-numeric:tabular-nums; color:var(--text-secondary); font-weight:600;}
+  .routenote{margin-top:15px; padding:11px 12px; background:var(--surface-2); border-radius:9px; font-size:11.5px; color:var(--text-secondary); border-left:2px solid var(--s3);}
+  .routenote b{color:var(--text-primary);}
+  /* unit economics table */
+  table{width:100%; border-collapse:collapse; font-size:12.5px;}
+  th{text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); font-weight:600; padding:0 10px 10px; border-bottom:1px solid var(--border);}
+  th.num,td.num{text-align:right; font-variant-numeric:tabular-nums;}
+  td{padding:11px 10px; border-bottom:1px solid rgba(255,255,255,0.05); color:var(--text-secondary);}
+  tr:last-child td{border-bottom:none;}
+  td.cust{color:var(--text-primary); font-weight:600;}
+  td.cust small{display:block; color:var(--muted); font-weight:400; font-size:10.5px;}
+  .marg{font-weight:650;}
+  .spark{vertical-align:middle;}
+  .foot{font-size:11px; color:var(--muted); margin-top:20px; text-align:center; border-top:1px solid var(--border); padding-top:14px;}
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr);} .cols{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- top bar -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">◧</div>
+      <div>
+        <h1>AI Cost Governance — Live Console</h1>
+        <div class="sub">Attribute · Explain · Enforce — before execution</div>
+      </div>
+    </div>
+    <div class="topright">
+      <span class="live"><span class="dot"></span>Live</span>
+      <span class="org">Acme AI · Scale-up workspace</span>
+    </div>
+  </div>
+
+  <div class="banner">◔ &nbsp;Prototype mockup — illustrative data. Product screen for WTIA pitch. Primary metric = per-customer / per-feature AI cost of goods (COGS), not raw savings.</div>
+
+  <!-- KPI row -->
+  <div class="kpis">
+    <div class="tile">
+      <div class="label">Month-to-date AI COGS</div>
+      <div class="val">$182.4<small>K</small></div>
+      <div class="meta"><span class="down">▲ 11%</span> vs last month · attributed across 3 vendors</div>
+    </div>
+    <div class="tile">
+      <div class="label">LLM cost / COGS</div>
+      <div class="val">14.2<small>%</small></div>
+      <div class="meta"><span class="chip good">under 20% target</span> healthy SaaS margin</div>
+    </div>
+    <div class="tile">
+      <div class="label">Overspend blocked today</div>
+      <div class="val">$9.7<small>K</small></div>
+      <div class="meta"><span class="up">7 events</span> stopped before execution</div>
+    </div>
+    <div class="tile">
+      <div class="label">Cost per served customer</div>
+      <div class="val">$1.86</div>
+      <div class="meta">avg · <span class="down">4 accounts margin-negative</span></div>
+    </div>
+  </div>
+
+  <!-- panels row -->
+  <div class="cols">
+
+    <!-- LEFT: real-time budget hard-limits -->
+    <div class="panel">
+      <h2>◧ Real-time budget hard-limits</h2>
+      <p class="desc">In-path enforcement. Each request is evaluated against per-customer & per-feature budgets before it runs — not billed after.</p>
+
+      <div class="meter-row">
+        <div class="meter-top"><span class="name">Feature: Deep-Research agent <span>tool + external API</span></span><span class="amt">$14.2K / $15K</span></div>
+        <div class="track"><div class="fill" style="width:94.6%;background:var(--warning);"></div><div class="limit-mark" style="right:0;"></div></div>
+        <div class="meter-cap"><svg class="ic" viewBox="0 0 16 16" fill="none"><path d="M8 1.5 1 14h14L8 1.5Z" stroke="var(--warning)" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 6v3.5" stroke="var(--warning)" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="11.6" r="0.9" fill="var(--warning)"/></svg><b style="color:var(--warning);">Warning</b> — 95% of daily cap · auto-throttle armed</div>
+      </div>
+
+      <div class="meter-row">
+        <div class="meter-top"><span class="name">Customer: Northwind Corp <span>enterprise plan</span></span><span class="amt">$15K / $15K</span></div>
+        <div class="track"><div class="fill" style="width:100%;background:var(--critical);"></div><div class="limit-mark" style="right:0;"></div></div>
+        <div class="meter-cap"><svg class="ic" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.4" stroke="var(--critical)" stroke-width="1.4"/><path d="M5.6 5.6l4.8 4.8M10.4 5.6l-4.8 4.8" stroke="var(--critical)" stroke-width="1.4" stroke-linecap="round"/></svg><b style="color:#ef6d6d;">Hard limit hit</b> — new calls blocked, on-call notified</div>
+      </div>
+
+      <div class="meter-row">
+        <div class="meter-top"><span class="name">Feature: Support copilot <span>LLM only</span></span><span class="amt">$6.1K / $12K</span></div>
+        <div class="track"><div class="fill" style="width:50.8%;background:var(--good);"></div><div class="limit-mark" style="right:0;"></div></div>
+        <div class="meter-cap"><svg class="ic" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.4" stroke="var(--good)" stroke-width="1.4"/><path d="M5.2 8.2l1.9 1.9 3.7-3.9" stroke="var(--good)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><b style="color:#3cc73c;">Healthy</b> — within budget</div>
+      </div>
+
+      <div class="feed">
+        <h3>Enforcement feed — audit-grade "why"</h3>
+        <div class="evt">
+          <span class="tag blocked">BLOCKED</span>
+          <div class="body"><b>Northwind Corp</b> · Deep-Research agent
+            <div class="why">Session exceeded $15K daily cap on step 42/∞ — retry-loop signature (11 identical tool calls). Reason logged for finance export.</div>
+          </div>
+          <span class="t">00:12s ago</span>
+        </div>
+        <div class="evt">
+          <span class="tag throttled">THROTTLED</span>
+          <div class="body"><b>Acme onboarding bot</b> · web-search API
+            <div class="why">Rate 400% above 7-day baseline — routed to budget model, external calls capped at 3/req.</div>
+          </div>
+          <span class="t">1m ago</span>
+        </div>
+        <div class="evt">
+          <span class="tag blocked">BLOCKED</span>
+          <div class="body"><b>Trial workspace #4471</b> · reranker
+            <div class="why">Projected run cost $2,340 &gt; free-tier ceiling $50. Stopped pre-execution.</div>
+          </div>
+          <span class="t">4m ago</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: LLM load balancing / routing -->
+    <div class="panel">
+      <h2>◈ LLM load balancing &amp; routing</h2>
+      <p class="desc">Requests routed by query complexity across vendors. Distribution today (48,120 requests).</p>
+
+      <div class="routebar">
+        <div class="seg" style="flex:0 0 52%; background:var(--s1);">Budget 52%</div>
+        <div class="seg" style="flex:0 0 27%; background:var(--s3);">Mid 27%</div>
+        <div class="seg" style="flex:0 0 15%; background:var(--s2);">15%</div>
+        <div class="seg" style="flex:0 0 6%; background:var(--s4); color:#1a1a19;">6%</div>
+      </div>
+
+      <div class="rlegend">
+        <div class="rl"><span class="sw" style="background:var(--s1);"></span><span class="nm">Budget tier<small>simple / cached queries</small></span><span class="pct">52%</span></div>
+        <div class="rl"><span class="sw" style="background:var(--s3);"></span><span class="nm">Mid tier<small>standard reasoning</small></span><span class="pct">27%</span></div>
+        <div class="rl"><span class="sw" style="background:var(--s2);"></span><span class="nm">Frontier<small>complex reasoning</small></span><span class="pct">15%</span></div>
+        <div class="rl"><span class="sw" style="background:var(--s4);"></span><span class="nm">Fail-over<small>vendor outage reroute</small></span><span class="pct">6%</span></div>
+      </div>
+
+      <div class="routenote">
+        Routing keeps quality while trimming token spend — but that saving is a <b>by-product</b>. The point is we can price it: every request is tagged to a vendor, a model tier, and a customer, so the COGS view below is exact. <b>99.98%</b> availability held through 2 vendor incidents this week via fail-over.
+      </div>
+
+      <div style="margin-top:15px; display:flex; gap:10px;">
+        <div class="tile" style="flex:1; padding:12px 13px;">
+          <div class="label" style="margin-bottom:6px;">Est. spend avoided by routing</div>
+          <div class="val" style="font-size:20px;">$31.5<small>K</small> <span class="chip good" style="vertical-align:middle;">by-product</span></div>
+        </div>
+        <div class="tile" style="flex:1; padding:12px 13px;">
+          <div class="label" style="margin-bottom:6px;">Avg routing overhead</div>
+          <div class="val" style="font-size:20px;">28<small>ms</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- unit economics table -->
+  <div class="panel">
+    <h2>◭ Per-customer unit economics <span style="font-weight:400;color:var(--muted);font-size:11.5px;">— the layer billing data can't give you</span></h2>
+    <p class="desc">Real-time AI cost of goods per account, from in-path attribution. This is the board-report / pricing view — and the data that compounds into our moat.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Account</th>
+          <th class="num">MTD AI cost</th>
+          <th class="num">Plan price</th>
+          <th class="num">Gross margin</th>
+          <th>30-day cost trend</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cust">Northwind Corp<small>enterprise · Deep-Research heavy</small></td>
+          <td class="num">$14,980</td><td class="num">$12,000</td>
+          <td class="num marg" style="color:#ef6d6d;">−24.8%</td>
+          <td><svg class="spark" width="96" height="24" viewBox="0 0 96 24"><polyline points="0,18 16,17 32,15 48,12 64,9 80,5 96,2" fill="none" stroke="var(--critical)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td><span class="chip crit">margin-negative</span></td>
+        </tr>
+        <tr>
+          <td class="cust">Globex SaaS<small>growth · support copilot</small></td>
+          <td class="num">$3,120</td><td class="num">$6,000</td>
+          <td class="num marg" style="color:#3cc73c;">+48.0%</td>
+          <td><svg class="spark" width="96" height="24" viewBox="0 0 96 24"><polyline points="0,10 16,11 32,9 48,12 64,10 80,11 96,9" fill="none" stroke="var(--s3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td><span class="chip good">healthy</span></td>
+        </tr>
+        <tr>
+          <td class="cust">Initech<small>growth · mixed agents</small></td>
+          <td class="num">$5,540</td><td class="num">$6,000</td>
+          <td class="num marg" style="color:var(--warning);">+7.7%</td>
+          <td><svg class="spark" width="96" height="24" viewBox="0 0 96 24"><polyline points="0,16 16,14 32,15 48,11 64,12 80,8 96,7" fill="none" stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td><span class="chip warn">watch</span></td>
+        </tr>
+        <tr>
+          <td class="cust">Umbrella Data<small>enterprise · RAG at scale</small></td>
+          <td class="num">$9,870</td><td class="num">$18,000</td>
+          <td class="num marg" style="color:#3cc73c;">+45.2%</td>
+          <td><svg class="spark" width="96" height="24" viewBox="0 0 96 24"><polyline points="0,9 16,10 32,8 48,9 64,7 80,8 96,6" fill="none" stroke="var(--s3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td><span class="chip good">healthy</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="foot">AI Cost Governance · Live Console — prototype for WTIA investor pitch. Illustrative data; not a live deployment. "Not a CCTV after the fire — a breaker before it ignites."</div>
+
+</div>
+</body>
+</html>

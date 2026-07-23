@@ -2,7 +2,7 @@
 
 > **To Claude:** When invoked on this idea/project, read ONLY this file first, then start. Open other docs only when this file points to them. After every idea-related session, update this file (esp. "Status", "Next", "Decision log").
 > **Output language = Korean** (deliverables + chat). This brief is English for token economy only.
-> Last updated: 2026-07-23 (PDT)
+> Last updated: 2026-07-23 (PDT) — pitch-deck storyline + dashboard prototype + VC script added
 
 ---
 
@@ -58,7 +58,7 @@ Old framing (small startups + cost-saving) collapsed under two rebuttals → swi
 
 - **Structure: The Market Shift (Raskin)** — no traction, so push the market shift.
 - **Flow:** title → Shift (spend-decider shifts human→model) → Villain (after-the-fact dashboards, static keys) → incident evidence ($4.2K–$500M) → Promised Land → Vehicle (solution) → demo → customer → market → competition → moat → BM/pricing → GTM → traction → team → finance/Ask.
-- **⚠️ Unfinished:** solution (slides 6–7) not locked = biggest task. Ask amount/use TBD.
+- **Solution slides 6–8 draft = done** (`Solution/스토리라인-통합-Problem-Solution.md`): COGS-lead flow, tech mechanisms reworded (in-path policy engine / semantic attribution / dynamic routing = by-product), moat = data accumulation. **Still needs interview numbers + team sign-off on off-path vs in-path form.** Ask amount/use TBD.
 - **3 mandatory rebuttals:** "just buy tokens" / "build it yourself" / "what if OpenAI does it" (answers §1·§3).
 - **Finance slide = revenue (hockey stick) only. Drop cost/net income** (7/21 class). Purpose = land a 2nd meeting.
 - **20-min discipline:** target 10-min talk (filling all 20 = penalty) + 8–10 min Q&A (score via the 3 rebuttals).
@@ -74,7 +74,7 @@ Old framing (small startups + cost-saving) collapsed under two rebuttals → swi
 
 ## 5. Status & next
 
-**Status:** Problem · Why Now · competition · ICP · personas · market research (verified) · positioning reset · pitch-narrative worksheet = done. Interviews = 0. Solution form = undecided.
+**Status:** Problem · Why Now · competition · ICP · personas · market research (verified) · positioning reset · pitch-narrative worksheet = done. **Pitch storyline (Problem→Solution) + dashboard prototype (HTML) + Seattle-VC 1–2min script (Notion) = done (2026-07-23).** Interviews = 0. Solution form (off-path vs in-path) still needs team sign-off.
 Repo `WTIA_AI_Cost_Gov` (github.com/jmormalik/WTIA_AI_Cost_Gov, SSH) created + teammate 태원 invited as collaborator, but **not yet pushed** (sandbox can't push — user must run push locally). Notion 검증본 enriched to full depth. Context files (CLAUDE.md, _START_HERE.md) converted to English.
 
 **Next (priority):**
@@ -82,7 +82,7 @@ Repo `WTIA_AI_Cost_Gov` (github.com/jmormalik/WTIA_AI_Cost_Gov, SSH) created + t
 2. **Decide solution form with team** (off-path report vs in-path proxy) — rest of deck depends on this
 3. **10–15 interviews** — life/death Qs: "what % of spend is tools/external API?" + "willing to put a proxy in the path?" + "at what spend level do you buy vs build?"
 4. **Week5 homework** (2 revenue models · pricing hypothesis · 6-quarter roadmap · 3–5yr financials) — templates in `_class-materials/Week 5 ... docx`, `_class-materials/Financial Forecast Template ... xlsx` (git-ignored folder)
-5. Assemble pitch deck draft
+5. Assemble pitch deck draft — **storyline (slides 3–8) now drafted** in `Solution/스토리라인-통합-Problem-Solution.md`; port into slides + swap example numbers for interview data
 
 ---
 
@@ -106,3 +106,4 @@ Repo `WTIA_AI_Cost_Gov` (github.com/jmormalik/WTIA_AI_Cost_Gov, SSH) created + t
 - 2026-07-22: market research cross-verified, tags applied. 79% · CAGR20% · Uber · mid-size 81% · COGS20% = locked as pitch-citable.
 - 2026-07-23: dir cleanup — class materials → `_class-materials/` (git-ignored), our outputs → `deliverables/`. README + .gitignore set. GitHub repo created (SSH), teammate invited. Push pending (user runs locally).
 - 2026-07-23: Notion 검증본 page enriched to full white-paper depth (competitor funding, vendor gap, market sizing, Korea ecosystem, full sources). CLAUDE.md + _START_HERE.md converted to English for token economy (Korean output rule unchanged).
+- 2026-07-23: Reconciled teammate's Gemini "Moat/Why-Now" draft (`WTIA_AI_Cost_Gov_Moat_Why_Now_v1.md`) against locked positioning. **Rejected** its cost-saving lead + "kernel/C++ low-level" technical-moat framing (contradicts COGS-lead + collapses under technical-VC scrutiny; routing/caching = copyable, not a moat). **Confirmed:** COGS attribution as lead, savings as by-product, moat = data accumulation (unit-economics accuracy + cross-customer benchmark). Produced 3 deliverables: (1) storyline doc `Solution/스토리라인-통합-Problem-Solution.md`, (2) dashboard prototype `deliverables/ai_cost_gov_dashboard_prototype.html` (+ Cowork artifact "ai-cost-gov-dashboard"), (3) Notion pitch-script sub-page "🎤 피칭 대본 — 데이터 축적 해자" under main hub. Tech terms reworded to defensible: in-path policy engine / semantic usage attribution / dynamic routing. All numbers = project-verified only; Gemini's unverified stats (BCG 5–8%, MIT 95%, Datasumi 98%) deliberately excluded pending sourcing.
