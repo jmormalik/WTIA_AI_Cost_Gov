@@ -1,0 +1,11 @@
+# OS
+.DS_Store
+
+# 강의 자료 — 교수 강의덱·멘토 배포 PDF·빈 과제 템플릿 (팀 공유/업로드 대상 아님)
+_class-materials/
+
+# 로컬 컨텍스트/캐시
+.claude/
+
+# 레포 자기 자신(중첩 방지) — Method A로 부모 폴더를 init하면 이 줄 삭제
+WTIA_AI_Cost_Gov/
