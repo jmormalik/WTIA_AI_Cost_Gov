@@ -10,9 +10,9 @@
 
 - **Topic:** AI agent cost governance. A layer that controls the LLM/tool/external-API spend an agent triggers on its own **in the request path, before execution**, and **explains (audit-grade) why it blocked**.
 - **One-liner:** "Not a CCTV after the fire — a breaker before it ignites."
-- **Form:** team project (user = customer dev/GTM, teammate = tech originator). WTIA capstone = **investor pitch deck**.
+- **Form:** team project (user = **CEO**, also customer dev/GTM; teammate = tech originator). WTIA capstone = **investor pitch deck**.
 - **User's real goal:** NOT to actually found a company. Goal = a **winning pitch** (stable + brilliant + Q&A-defensible), but the model must be realistic.
-- **Biggest bottleneck:** customer interviews = **0**. Every number (ACV/market/finance) traces back to this.
+- **Biggest bottleneck:** formal customer interviews = **0** (1 screening Q&A done — US seed, anti-ICP). Every number (ACV/market/finance) traces back to this.
 
 ---
 
@@ -20,7 +20,7 @@
 
 Old framing (small startups + cost-saving) collapsed under two rebuttals → switched to:
 
-- **① ICP: small startups → mid-market/scaleup** ($50K–$500K/mo AI spend, 50–300 ppl). Test: "no engineers to build in-house like Meta, but bigger spend/audit pressure than a startup." Korean AI startups (라이너·뤼튼·채널코퍼레이션) = **free design partners**.
+- **① ICP: small startups → mid-market/scaleup** ($50K–$500K/mo AI spend, 50–300 ppl). Test: "no engineers to build in-house like Meta, but bigger spend/audit pressure than a startup." Korean AI startups (라이너·뤼튼·채널코퍼레이션) = **free design partners**. (Reflected into `ICP/ICP.md` + candidate list on 2026-07-23.)
 - **② Value: cost-saving → cost attribution/explanation (COGS).** "We cut your AI bill" ❌ → "We let you explain your AI unit cost" ✅. (Saving fights adoption incentives + negative ROI at small scale.)
 - **③ Market story:** Korea = wedge, market = global agent infra. **Do NOT present LAM $80k as market size.**
 
@@ -58,10 +58,10 @@ Old framing (small startups + cost-saving) collapsed under two rebuttals → swi
 
 - **Structure: The Market Shift (Raskin)** — no traction, so push the market shift.
 - **Flow:** title → Shift (spend-decider shifts human→model) → Villain (after-the-fact dashboards, static keys) → incident evidence ($4.2K–$500M) → Promised Land → Vehicle (solution) → demo → customer → market → competition → moat → BM/pricing → GTM → traction → team → finance/Ask.
-- **Solution slides 6–8 = drafted** in `Solution/스토리라인-통합-Problem-Solution.md` (COGS-lead flow; tech reworded to in-path policy engine / semantic attribution / dynamic routing = by-product; moat = data accumulation). Still needs interview numbers + team sign-off on off-path vs in-path. Ask amount/use TBD.
-- **3 mandatory rebuttals:** "just buy tokens" / "build it yourself" / "what if OpenAI does it" (answers §1·§3).
+- **Solution slides 6–8 = drafted** in `Solution/스토리라인-통합-Problem-Solution.md` (COGS-lead flow; tech reworded to in-path policy engine / semantic attribution / dynamic routing = by-product; moat = data accumulation). Still needs interview numbers. Ask amount/use TBD.
+- **3 mandatory rebuttals:** "just buy tokens" / "build it yourself" / "what if OpenAI does it" (answers §1·§3). +1 pending: unified OSS-only rebuttal (team agenda ④).
 - **Finance slide = revenue (hockey stick) only. Drop cost/net income** (7/21 class). Purpose = land a 2nd meeting.
-- **20-min discipline:** target 10-min talk (filling all 20 = penalty) + 8–10 min Q&A (score via the 3 rebuttals).
+- **20-min discipline:** target 10-min talk (filling all 20 = penalty) + 8–10 min Q&A (score via the rebuttals).
 - Traction: with 0 interviews, substitute **"N design partners + interview findings"**, target metric = net-negative churn.
 
 ## 4-1. Schedule (backward)
@@ -74,28 +74,32 @@ Old framing (small startups + cost-saving) collapsed under two rebuttals → swi
 
 ## 5. Status & next
 
-**Status:** Problem · Why Now · competition · ICP · personas · market research (verified) · positioning reset · pitch-narrative worksheet = done. **Pitch storyline (Problem→Solution, slides 3–8) + COGS dashboard prototype + Seattle-VC pitch script (Notion) + mentor-Q&A brief for Gemini = done (2026-07-23).** Interviews = 0 (still the #1 bottleneck). Solution form (off-path report vs in-path proxy) = still needs team sign-off.
-Repo `WTIA_AI_Cost_Gov` (github.com/jmormalik/WTIA_AI_Cost_Gov, SSH) created, teammate 태원 invited, and **pushed to origin/main** (local git). Notion 검증본 enriched to full depth. Context files (CLAUDE.md, _START_HERE.md) in English (Korean output rule unchanged).
+**Status:** Problem · Why Now · competition · ICP · personas · market research (verified) · positioning reset · pitch-narrative worksheet = done. **Pitch storyline (Problem→Solution, slides 3–8) + COGS dashboard prototype + Seattle-VC pitch script (Notion) + mentor-Q&A brief for Gemini = done (7/23).** Interviews: 0 formal, 1 screening Q&A (US seed — anti-ICP confirmed, `Interview/2026-07-21-미국-시드-에이전트-플랫폼-개발자.md`). **Outreach sending started 7/23** (달파 email, 라이너 LinkedIn — `Interview/아웃리치-파이프라인.md`). **Solution form: Option C "trust ladder" CONFIRMED by team (7/23 team meeting — teammate agreed to premise 2 "proxy-first is a dead path"**; design doc: `~/.gstack/projects/jmormalik-WTIA_AI_Cost_Gov/taewonki-main-design-20260723-135451.md`). **CEO plan done (7/23 plan-ceo-review):** parallel tracks (user = deck+interviews / teammate = Cost Autopsy demo), deck scope + 2-week checkpoints locked — plan: `~/.gstack/projects/jmormalik-WTIA_AI_Cost_Gov/ceo-plans/2026-07-23-trust-ladder-pitch-deck.md`. **New-ICP propagation done (7/23):** `ICP/ICP.md` rewritten (paid target = mid-market / Korean startups = free design partners), candidate list reclassified; US mid-market candidate research (10–15 new companies) in progress.
+Repo `WTIA_AI_Cost_Gov` (github.com/jmormalik/WTIA_AI_Cost_Gov, SSH) live on origin/main. Notion 검증본 enriched. Context files (CLAUDE.md, _START_HERE.md) in English (Korean output rule unchanged).
 
 **Next (priority):**
-1. **Decide solution form with team** (off-path report vs in-path proxy) — storyline assumes off-path→in-path; rest of deck depends on confirming this.
-2. **10–15 interviews** — life/death Qs: "what % of spend is tools/external API?" + "willing to put a proxy in the path?" + "at what spend level do you buy vs build?" Then swap the illustrative numbers in the storyline/dashboard/pitch-script for real data.
-3. **Week5 homework** (2 revenue models · pricing hypothesis · 6-quarter roadmap · 3–5yr financials) — templates in `_class-materials/Week 5 ... docx`, `_class-materials/Financial Forecast Template ... xlsx` (git-ignored folder).
-4. **Assemble pitch deck (.pptx)** — port `Solution/스토리라인-통합-Problem-Solution.md` into slides 3–8; embed the dashboard prototype as the demo slide.
-5. Keep repo + teammate in sync (teammate becomes contributor once they push a commit under their own GitHub email).
+1. ~~Lock Option C~~ → **done (7/23 team meeting)**. Remaining team agenda to confirm: ② Cost Autopsy 48h prototype resourcing (sample-log deadline 7/31) ③ new slogan ("차단기를 팔기 전에 장부부터") adoption ④ unified OSS-only rebuttal.
+1-0. **Deck execution checkpoints (CEO plan; detail in plan file):** 7/25 guide hypothesis-1 reflected → 7/28 slides 6·7 draft → 7/31 sample-log deadline → 8/1 E1·E2·E6 drafts → 8/3 weekly sync (E3·E4 gate call) → 8/5 team rehearsal (10-min discipline + 4 rebuttals) → 8/6 pitch practice #1.
+1-1. **Add hypothesis 1 to interview guide (deadline 7/25, before outreach replies)** — "Is COGS explanation/attribution an always-on need?": (i) recurring engineer hours (ii) CFO/board actually consumes the numbers (iii) wrong-number incident cases — 5+ survive / 3− reject / 3–4 → add 5 more, re-judge once. Add behavioral metric **"would you hand over logs?"**.
+2. **10–15 interviews** — life/death Qs: "what % of spend is tools/external API?" (= hypothesis 0, formalized with judgment rule, guide §4-2 Q-H0) + "willing to put a proxy in the path?" + "at what spend level buy vs build?". Guide heavily updated 2026-07-23 — re-read before interviewing. Then swap illustrative numbers in storyline/dashboard/pitch-script for real data.
+3. **Team check:** does the screening requirement (revenue mainly paid/B2B) conflict with "Korean startups = free design partners"? Decide tagging paid-validation samples vs design-partner candidates in one pipeline.
+4. **US mid-market outreach** — fold research results into `Interview/인터뷰-후보-리스트.md` "미국 중간 시장" section, then LinkedIn outreach (English guide questions).
+5. **Week5 homework** (2 revenue models · pricing hypothesis · 6-quarter roadmap · 3–5yr financials) — templates in `_class-materials/` (git-ignored).
+6. **Assemble pitch deck (.pptx)** — port `Solution/스토리라인-통합-Problem-Solution.md` into slides 3–8; embed dashboard prototype as demo slide.
 
 ---
 
 ## 6. Repository tour (teammate onboarding — read this to work any file)
 
-> **New teammate quickstart:** (1) Drop the whole `AI_cost_gov/` folder into Claude (Cowork/Project). (2) Claude reads THIS file first (rule at top) — that alone loads full context. (3) Output language = Korean; industry terms stay English. (4) Role split: 태원 = tech/product, 재민(Malik) = customer dev · GTM · research. (5) Every doc separates ✅ verified facts from ⚠️ hypotheses; never edit interview quotes. (6) At session end, Claude updates §5 Status/Next + §7 Decision log here. (7) `_class-materials/` is git-ignored — a fresh git clone won't have it; that's fine, it's local reference only.
+> **New teammate quickstart:** (1) Drop the whole repo folder into Claude (Cowork/Project). (2) Claude reads THIS file first (rule at top) — that alone loads full context. (3) Output language = Korean; industry terms stay English. (4) Role split: 태원 = tech/product, 재민(Malik) = CEO · customer dev · GTM · research. (5) Every doc separates ✅ verified facts from ⚠️ hypotheses; never edit interview quotes. (6) At session end, Claude updates §5 Status/Next + §7 Decision log here. (7) `_class-materials/` is git-ignored — a fresh git clone won't have it; that's fine, it's local reference only.
 
 Below: every tracked file, what it is, and when to open it. Open a file only when the task needs it (token economy).
 
 **Root files**
 - `_START_HERE.md` — this master brief. Always read first; single source of truth for context.
 - `README.md` — public-facing repo intro (what the repo is, dir map, positioning). Sober tone for outside readers.
-- `CLAUDE.md` — working rules for Claude in this repo (Korean output, dir conventions, cross-doc consistency, session-start rule).
+- `CLAUDE.md` — working rules for Claude in this repo (Korean output, dir conventions, cross-doc consistency, session-start rule, skill routing).
+- `TODOS.md` — running task list.
 - `시장조사.md` — cross-verified market & competition write-up. Each figure tagged pitch-citable vs caution. Main evidence source.
 - `WTIA_AI_Cost_Gov_Moat_Why_Now_v1.md` — teammate's Gemini-authored Why-Now/Moat draft. ⚠️ Its cost-saving lead + "kernel/C++ low-level moat" framing was **rejected** (see §7, 2026-07-23); kept only for reference. Do not reuse its unsourced stats.
 - `MENTOR_QA_CONTEXT_for_Gemini.md` — standalone English brief to paste into Gemini so it can translate a live mentor question + recommend an answer in our locked positioning. Use during mentoring sessions.
@@ -106,10 +110,10 @@ Below: every tracked file, what it is, and when to open it. Open a file only whe
 - `리스크-분석-및-대책.md` — 5 fatal risks + counters. Open before any competition, rebuttal, or GTM work.
 
 **`ICP/`**
-- `ICP.md` — ideal customer profile (mid-market/scale-up, $50K+/mo AI spend, 50–300 ppl).
+- `ICP.md` — ideal customer profile. **Rewritten 2026-07-23:** §1 paid target = mid-market/scale-up ($50K–$500K/mo, 50–300 ppl, can't build in-house), §2 Korean AI startups = free design partners, reversed switch triggers.
 
 **`Buyer-Persona/`**
-- `01-CTO-공동창업자.md` · `02-AI-리드-챔피언.md` — the two decision-maker personas (goals, pains, buying triggers).
+- `01-CTO-공동창업자.md` · `02-AI-리드-챔피언.md` — the two decision-maker personas (goals, pains, buying triggers). Mid-market adds CFO/finance as economic stakeholder behind them.
 - `이해관계자-맵.md` — Power × Interest stakeholder map.
 
 **`Solution/`**
@@ -123,8 +127,12 @@ Below: every tracked file, what it is, and when to open it. Open a file only whe
 **`Market/`**
 - `TAM-SAM-SOM.md` — market sizing (⚠️ under revision — do NOT present the old LAM $80K as market size).
 
-**`Interview/` — ⚠️ 0 records so far (the #1 bottleneck)**
-- `인터뷰-가이드-Mom-Test.md` — Mom Test question guide. `인터뷰-후보-리스트.md` — target list. `아웃리치-이메일-초안.md` — outreach email drafts. New records go here named `YYYY-MM-DD-target.md`; never alter original quotes.
+**`Interview/` — 0 formal records, 1 screening (the #1 bottleneck)**
+- `인터뷰-가이드-Mom-Test.md` — Mom Test question guide (§4-2 hypothesis-0 items; heavily updated 7/23).
+- `인터뷰-후보-리스트.md` — target list, reclassified 7/23 to new ICP (Korea = design partners / US = main paid-ICP track).
+- `아웃리치-이메일-초안.md` — outreach drafts (KR/US LinkedIn templates included). `아웃리치-파이프라인.md` — per-company outreach tracker (sending started 7/23).
+- `연습-페르소나.md` — 5 fictional personas for interview role-play practice.
+- `2026-07-21-미국-시드-에이전트-플랫폼-개발자.md` — anonymized screening record (anti-ICP data point). New records: `YYYY-MM-DD-target.md`; never alter original quotes.
 
 **`deliverables/` — submittable outputs**
 - `Pitch_Narrative_Worksheet_채움.docx` — filled pitch-narrative worksheet. `Week3_숙제_-_ICP___경쟁사___시장규모_채움.docx` — Week3 homework. `Competitive_Analysis_AI_Cost_Governance.xlsx` — competitor comparison sheet. `ai_cost_gov_dashboard_prototype.html` — COGS dashboard prototype (per-customer unit economics + real-time budget hard-limits + LLM routing); also saved as Cowork artifact "ai-cost-gov-dashboard".
@@ -134,6 +142,7 @@ Below: every tracked file, what it is, and when to open it. Open a file only whe
 
 **External**
 - **Notion hub:** https://app.notion.com/p/3a4b5f428bfd81eea734fbb1b73c86c2 — sub-pages include the verified market page, positioning-reset page, and the pitch script "🎤 피칭 대본 — 데이터 축적 해자". Notion is the shareable mirror; this repo is the working source.
+- **gstack local docs (not in repo):** design doc + CEO plan under `~/.gstack/projects/jmormalik-WTIA_AI_Cost_Gov/`.
 
 ---
 
@@ -143,7 +152,15 @@ Below: every tracked file, what it is, and when to open it. Open a file only whe
 - 2026-07: joined team → pivot to AI agent cost governance. User role = customer dev/GTM.
 - 2026-07-22: positioning reset (mid-market × COGS). Basis = Meta case + ROI/build-in-house rebuttals.
 - 2026-07-22: market research cross-verified, tags applied. 79% · CAGR20% · Uber · mid-size 81% · COGS20% = locked as pitch-citable.
-- 2026-07-23: dir cleanup — class materials → `_class-materials/` (git-ignored), our outputs → `deliverables/`. README + .gitignore set. GitHub repo created (SSH), teammate invited. Push pending (user runs locally).
-- 2026-07-23: Notion 검증본 page enriched to full white-paper depth (competitor funding, vendor gap, market sizing, Korea ecosystem, full sources). CLAUDE.md + _START_HERE.md converted to English for token economy (Korean output rule unchanged).
-- 2026-07-23: Rejected Gemini Moat/Why-Now draft's cost-saving lead + "kernel/C++" framing; confirmed COGS-lead + data-accumulation moat. Added deliverables: `Solution/스토리라인-통합-Problem-Solution.md`, `deliverables/ai_cost_gov_dashboard_prototype.html` (+ Cowork artifact), Notion pitch-script sub-page, `MENTOR_QA_CONTEXT_for_Gemini.md`. README rewritten to sober prose.
-- 2026-07-23: §6 expanded into a full repository tour (every file described + teammate onboarding quickstart) so a teammate can drop the folder into Claude and start immediately.
+- 2026-07-23: dir cleanup — class materials → `_class-materials/` (git-ignored), our outputs → `deliverables/`. README + .gitignore set. GitHub repo created (SSH), teammate invited, pushed to origin/main.
+- 2026-07-23: Notion 검증본 page enriched to full white-paper depth. CLAUDE.md + _START_HERE.md converted to English for token economy (Korean output rule unchanged).
+- 2026-07-23: Rejected Gemini Moat/Why-Now draft's cost-saving lead + "kernel/C++" framing; confirmed COGS-lead + data-accumulation moat. Added: `Solution/스토리라인-통합-Problem-Solution.md`, `deliverables/ai_cost_gov_dashboard_prototype.html` (+ Cowork artifact), Notion pitch-script sub-page, `MENTOR_QA_CONTEXT_for_Gemini.md`. README rewritten to sober prose.
+- 2026-07-23: §6 expanded into a full repository tour (teammate onboarding quickstart).
+- 2026-07-23: **가설 0 신설** — "툴/외부API 비용이 COGS의 15%+ 인 세그먼트가 존재하는가"를 선행 가설로 공식화. 판정식(비중 15%+ AND 월 지출 $2K+ 또는 툴콜 $300+/월, 6건 중 3건+ 생존), 문항 배치 규칙(라포 후반), "분리 불가" 응답의 이중 기록(결측 + 귀속 미성숙 증거) 포함. 인터뷰 가이드 §4-2 반영.
+- 2026-07-23: **기밀 규칙** — 인터뷰 기록의 외부 공유 시 회사·인물 식별 정보와 구체 숫자는 익명화·범위화. 이 저장소는 PUBLIC이므로 개인 단위 원자료(원문 인용·실명 추적표)는 로컬 보관, 저장소에는 익명화·집계본만.
+- 2026-07-23: 아웃리치 발송 시작 (달파 이메일 + 라이너 링크드인). 검증 스프린트 6주 설계 (판정 2026-09-02).
+- 2026-07-23: 역할 명확화 — 사용자 = **CEO**(고객개발·GTM 겸임). 팀 미팅 주재·최종 의사결정 권한은 사용자에게 있음.
+- 2026-07-23 (오피스아워): **솔루션 형태 C안 "신뢰 사다리" 잠정 채택** (팀 확정 대기) — 1단 경로 밖 리포트(유료) → 2단 비동기 정책 → 3단 고객 소유 게이트웨이 플러그인 차단(우리는 경로를 소유하지 않음). 근거: 1차 증거 0건이므로 복구 비용 비대칭 + "critical path엔 OSS만" 신호 + 8/6 덱 요구. B안(프록시 선행) 기각. **가설 1 신설**(COGS 상시 니즈, 반증 판정식). 인터뷰 측정 지표에 "로그를 넘기겠는가" 추가. 슬로건 재작성 제안(팀 합의 대상). 독립 2차 소견·적대적 리뷰 2R(14건 반영, 8/10) 통과.
+- 2026-07-23 (팀 미팅): **C안 "신뢰 사다리" 팀 확정** — 팀원(기술)이 전제 2("인라인 강제층은 무료 OSS가 status quo, 프록시 선행은 죽은 길")에 동의. A안 폴백 절차 종료. 잔여 안건(②Cost Autopsy 리소스 ③슬로건 ④OSS-only 답)은 확인 대기.
+- 2026-07-23 (CEO 리뷰): **피치덱 실행 경로 = 병렬 트랙 채택** (덱-우선·데모-우선 기각) — 사용자는 덱+인터뷰, 팀원은 데모, 데모 실패가 덱을 막지 않는 구조. 덱 스코프: E1 "탈락 데이터" 트랙션 재프레임 · E2 반론 백업 3장 · E3 로그 깔때기 카운터(8/3 판정: 의향 ≥2건 게재) · E4 Cost Autopsy 리포트 1장(2중 게이트: 미팅 승인 ≤7/28 + 로그 7/31, 8/3 실물 없으면 제거) · E6 Meta↔솔루션 연결 문장 채택, E5 Week5 BM 선정렬은 유예(방향만 확정: 절감액 연동 금지, 정액+티어). 팀 미팅 안건 3→4개(+OSS-only 반론 통합 답), 기한 7/26 · 무응답 시 7/28 정오 A안 폴백 간주. 덱 게재물에 기밀 규칙 명시 적용(회사명 노출 금지·범위화).
+- 2026-07-23 (신 ICP 전파): `ICP/ICP.md` 전면 재작성(유료 타겟 = 중간 시장 §1 / 한국 = 무료 디자인 파트너 §2 / 전환 트리거 역방향 재작성) + `Interview/인터뷰-후보-리스트.md` 신 ICP 재분류(본선: Clay·Cresta·Hebbia 승격 / 경계선: Decagon·EvenUp / 초과: Harvey·Sierra 등 = 레퍼런스 소스). "AX 전환 중견기업" 표현은 anti-ICP와 혼동 위험으로 사용 금지, "비치헤드" 대신 "무료 디자인 파트너"로 표기. 미국 중간 시장 신규 후보 리서치 착수.
