@@ -75,12 +75,14 @@ Old framing (small startups + cost-saving) collapsed under two rebuttals → swi
 ## 5. Status & next
 
 **Status:** Problem · Why Now · competition · ICP · personas · market research (verified) · positioning reset · pitch-narrative worksheet = done. Interviews = 0. Solution form = undecided.
+Repo `WTIA_AI_Cost_Gov` (github.com/jmormalik/WTIA_AI_Cost_Gov, SSH) created + teammate 태원 invited as collaborator, but **not yet pushed** (sandbox can't push — user must run push locally). Notion 검증본 enriched to full depth. Context files (CLAUDE.md, _START_HERE.md) converted to English.
 
 **Next (priority):**
-1. **Decide solution form with team** (off-path report vs in-path proxy) — rest of deck depends on this
-2. **10–15 interviews** — life/death Qs: "what % of spend is tools/external API?" + "willing to put a proxy in the path?" + "at what spend level do you buy vs build?"
-3. **Week5 homework** (2 revenue models · pricing hypothesis · 6-quarter roadmap · 3–5yr financials) — templates in `_class-materials/Week 5 ... docx`, `_class-materials/Financial Forecast Template ... xlsx` (git-ignored folder)
-4. Assemble pitch deck draft
+1. **Push repo locally** (sandbox cannot): `cd ~/Desktop/WTIA/AI_cost_gov && rm -rf WTIA_AI_Cost_Gov && git init && git remote add origin git@github.com:jmormalik/WTIA_AI_Cost_Gov.git && git add . && git status` (confirm `_class-materials/` not listed) → commit → `git push -u origin main`. Teammate becomes contributor once they push a commit under their own GitHub email.
+2. **Decide solution form with team** (off-path report vs in-path proxy) — rest of deck depends on this
+3. **10–15 interviews** — life/death Qs: "what % of spend is tools/external API?" + "willing to put a proxy in the path?" + "at what spend level do you buy vs build?"
+4. **Week5 homework** (2 revenue models · pricing hypothesis · 6-quarter roadmap · 3–5yr financials) — templates in `_class-materials/Week 5 ... docx`, `_class-materials/Financial Forecast Template ... xlsx` (git-ignored folder)
+5. Assemble pitch deck draft
 
 ---
 
@@ -102,3 +104,5 @@ Old framing (small startups + cost-saving) collapsed under two rebuttals → swi
 - 2026-07: joined team → pivot to AI agent cost governance. User role = customer dev/GTM.
 - 2026-07-22: positioning reset (mid-market × COGS). Basis = Meta case + ROI/build-in-house rebuttals.
 - 2026-07-22: market research cross-verified, tags applied. 79% · CAGR20% · Uber · mid-size 81% · COGS20% = locked as pitch-citable.
+- 2026-07-23: dir cleanup — class materials → `_class-materials/` (git-ignored), our outputs → `deliverables/`. README + .gitignore set. GitHub repo created (SSH), teammate invited. Push pending (user runs locally).
+- 2026-07-23: Notion 검증본 page enriched to full white-paper depth (competitor funding, vendor gap, market sizing, Korea ecosystem, full sources). CLAUDE.md + _START_HERE.md converted to English for token economy (Korean output rule unchanged).
