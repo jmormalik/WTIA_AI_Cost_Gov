@@ -119,7 +119,7 @@ ICP 부합 여부를 5분 안에 거르는 질문 (상세 문항은 [../Intervie
 
 - [../Solution/포지셔닝-재설정.md](../Solution/포지셔닝-재설정.md) — 재설정 논리 전문 (Meta 사례, ROI 표, 반론 방어)
 - Meta tokenmaxxing→AI Gateway 자체구축: [The Decoder](https://the-decoder.com/meta-shifts-from-tokenmaxxing-to-token-managing-as-internal-ai-costs-reportedly-hit-billions/)
-- DoiT 2026: 기업 AI 예산 초과 79%, 중간기업 81% > 대기업 76% (검증본: `시장조사.md`)
+- DoiT 2026: 기업 AI 예산 초과 79%, 중간기업 81% > 대기업 76% (검증본: `../Market/시장조사.md`)
 - [Windyflo — AI 에이전트 도입 후 운영 비용 가이드](https://blog.windyflo.com/blog/ai-agent-operation-cost/) (LLM API 비용이 운영비 40~50% 주장)
 - [하이퍼스케일러 스타트업 크레딧 현황 (Threads)](https://www.threads.com/@dalgom.bami/post/DJqf8jPSeoc) (Bedrock ~$30만, Azure ~$15만, GCP ~$30만)
 - [Google for Startups Accelerator: AI First Korea](https://startup.google.com/programs/accelerator/ai-first/korea/)

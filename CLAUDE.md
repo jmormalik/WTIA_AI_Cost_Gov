@@ -15,9 +15,11 @@ Not a code repo. A **document workspace to validate a startup idea around AI (ag
 - `Buyer-Persona/` — individual decision-maker personas (role, goals, pain points, buying triggers).
 - `Competitor-Analysis/` — competitive landscape: direct (same problem+solution), indirect (same problem only), status quo (what they do with no solution).
 - `Interview/` — customer interview records. Filename format `YYYY-MM-DD-target.md` (date first).
-- `Solution/` — solution direction & differentiation; moat candidates, product hypotheses.
-- `Market/` — market sizing (TAM/SAM/SOM) and market data.
+- `Solution/` — solution direction & differentiation; moat candidates, product hypotheses, business model & pricing.
+- `Pitch/` — deck slide copy (pitch storyline, BM/pricing/finance slides) + live-pitch support (mentor Q&A brief). Stage-facing material; `Solution/` holds the strategy behind it.
+- `Market/` — market sizing (TAM/SAM/SOM), cross-verified market/competition write-up (`시장조사.md`).
 - `deliverables/` — our filled homework/outputs (docx/xlsx).
+- `_archive/` — **git-ignored.** Rejected/superseded drafts kept for local history only; absent after a fresh clone.
 - `_class-materials/` — **git-ignored.** Lecture pptx, mentor PDF, blank templates. Local reference only; do not upload.
 
 ## Working principles

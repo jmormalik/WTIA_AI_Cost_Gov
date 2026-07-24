@@ -13,10 +13,10 @@
 - `Problem/` — 문제 정의, Why Now(사고 사례와 시장 데이터), 리스크 분석 및 대책
 - `ICP/` — 이상적 고객 프로필. 중간 시장/스케일업 기준
 - `Buyer-Persona/` — CTO·AI 리드 페르소나와 이해관계자 맵(Power × Interest)
-- `Solution/` — moat 후보, 포지셔닝 재설정(중간 시장 × COGS), 피치 스토리라인
+- `Solution/` — moat 후보, 포지셔닝 재설정(중간 시장 × COGS), 비즈니스 모델·가격, mid-market 가격 comps
+- `Pitch/` — 피치 스토리라인(Problem→Solution), BM·가격·재무 슬라이드 카피, 멘토 Q&A 브리프
 - `Competitor-Analysis/` — 경쟁사 분석, 기능 비교 매트릭스, 전략 캔버스
-- `Market/` — TAM/SAM/SOM
-- `시장조사.md` — 교차검증한 시장·경쟁 정리. 피치에 인용 가능한 항목과 주의가 필요한 항목을 태그로 구분
+- `Market/` — TAM/SAM/SOM, 교차검증한 시장·경쟁 정리(`시장조사.md`)
 - `Interview/` — Mom Test 가이드, 인터뷰 후보 리스트, 아웃리치 메일 초안
 - `deliverables/` — 제출용 과제와 산출물(Week3 과제, 피치 내러티브 워크시트, 경쟁 분석 스프레드시트, 대시보드 프로토타입)
 - `_class-materials/` — git에서 제외. 강의 자료, 멘토 PDF, 빈 템플릿 등 로컬 참고용
