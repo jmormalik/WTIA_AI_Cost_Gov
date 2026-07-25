@@ -87,7 +87,7 @@ Repo `WTIA_AI_Cost_Gov` (github.com/jmormalik/WTIA_AI_Cost_Gov, SSH) live on ori
 3. **Team check:** does the screening requirement (revenue mainly paid/B2B) conflict with "Korean startups = free design partners"? Decide tagging paid-validation samples vs design-partner candidates in one pipeline.
 4. **US mid-market outreach** — ~~research~~ done (7/24, 15 candidates listed). Next: verify `[재확인]` items before sending, then LinkedIn outreach starting with Top 5 (Regal · Maven AGI · Infinitus · Rogo · Pylon; English guide questions).
 5. **Week5 homework** (2 revenue models · pricing hypothesis · 6-quarter roadmap · 3–5yr financials) — **BM logic done (7/24) in `Solution/비즈니스모델-가격.md`**; remaining = swap ⚠️ hypothesis numbers (ACV/NRR/WTP) for interview data via the 5 validation targets in §8, then port into homework template (`_class-materials/`, git-ignored).
-6. **Assemble pitch deck (.pptx)** — port `Pitch/스토리라인-통합-Problem-Solution.md` into slides 3–8; embed dashboard prototype as demo slide.
+6. **Assemble pitch deck (.pptx)** — full 16-slide outline DONE (7/24) in `Pitch/피치덱-통합-아웃라인.md` (paste-ready). Remaining = (a) drop into Gamma/Slides, (b) fill 6 gaps flagged in the outline: product/team name, traction slide real data, price/finance ⚠️ numbers (Q-P2 interviews), Ask amount, embed dashboard demo, team "why us" line.
 
 ---
 
@@ -123,6 +123,7 @@ Below: every tracked file, what it is, and when to open it. Open a file only whe
 - `mid-market-가격-comps.md` — public pricing comps (CloudZero/Vantage/Langfuse/Helicone) anchoring the "2–3% of spend" price logic. 🔵 3rd-party estimates, cite as ranges.
 
 **`Pitch/` — 무대용 (deck slide copy + live-pitch support)**
+- `피치덱-통합-아웃라인.md` — **MASTER deck outline (2026-07-24):** all 16 slides + Q&A backup, paste-ready for Gamma/Slides. Assembles storyline + BM + market/competition/moat/GTM/traction/team/Ask. Start here for .pptx assembly; lists the 6 gaps to fill before 8/6.
 - `스토리라인-통합-Problem-Solution.md` — pitch Problem→Solution slide flow (slides 3–8; COGS-lead, savings as by-product, tech reworded to defensible terms).
 - `슬라이드-BM-가격.md` — BM·가격·재무 slide copy (sits after Moat slide 8; per-agent model + pricing card + hockey-stick finance + pricing rebuttals).
 - `MENTOR_QA_CONTEXT_for_Gemini.md` — English brief to paste into Gemini during live mentoring (translate a mentor question + recommend an answer in locked positioning).
