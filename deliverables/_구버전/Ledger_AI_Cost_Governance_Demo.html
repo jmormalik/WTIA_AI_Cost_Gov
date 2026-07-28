@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ledger — AI Cost Governance Demo</title>
+<style>
+:root{
+  --page:#0c0c0b; --surface-1:#171716; --surface-2:#1f1f1e; --surface-3:#272725;
+  --text:#ffffff; --text-2:#c3c2b7; --muted:#8b8983;
+  --border:rgba(255,255,255,0.10); --border-2:rgba(255,255,255,0.06);
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#a06bd4;
+  --good:#25b525; --warn:#fab219; --crit:#e04b4b;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--page);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased;}
+button{font-family:inherit;cursor:pointer;}
+.num{font-variant-numeric:tabular-nums;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 22px 56px;transition:padding-bottom .25s;}
+body.pres-on .wrap{padding-bottom:190px;}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:40;background:rgba(12,12,11,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.topbar-in{max-width:1280px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:18px;}
+.brand{display:flex;align-items:center;gap:11px;flex:none;}
+.logo{width:31px;height:31px;border-radius:9px;background:linear-gradient(135deg,var(--s1),var(--s3));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;}
+.brand h1{font-size:15px;margin:0;font-weight:660;letter-spacing:-0.015em;}
+.brand .sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.tabs{display:flex;gap:3px;margin-left:12px;}
+.tab{background:none;border:none;color:var(--muted);font-size:13px;font-weight:560;padding:7px 13px;border-radius:8px;transition:.15s;white-space:nowrap;}
+.tab:hover{color:var(--text-2);background:var(--surface-1);}
+.tab.on{color:var(--text);background:var(--surface-2);}
+.topright{margin-left:auto;display:flex;align-items:center;gap:10px;flex:none;}
+.live{display:flex;align-items:center;gap:6px;color:var(--good);font-weight:660;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;}
+.live.paused{color:var(--muted);}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--good);animation:pulse 2s infinite;}
+.live.paused .dot{background:var(--muted);animation:none;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,181,37,.45);}70%{box-shadow:0 0 0 7px rgba(37,181,37,0);}100%{box-shadow:0 0 0 0 rgba(37,181,37,0);}}
+.org{font-size:12px;color:var(--text-2);padding:5px 11px;border:1px solid var(--border);border-radius:8px;background:var(--surface-1);}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);font-size:12px;font-weight:560;padding:6px 12px;border-radius:8px;transition:.15s;}
+.btn:hover{background:var(--surface-3);color:var(--text);}
+.btn.pri{background:var(--s1);border-color:var(--s1);color:#fff;}
+.btn.pri:hover{background:#2f79d4;}
+.btn.danger{background:rgba(224,75,75,.14);border-color:rgba(224,75,75,.4);color:#f07b7b;}
+.btn.danger:hover{background:rgba(224,75,75,.24);}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.btn.on{background:var(--s4);border-color:var(--s4);color:#1a1a19;}
+
+/* ---------- demo strip ---------- */
+.strip{background:var(--surface-1);border-bottom:1px solid var(--border);}
+.strip-in{max-width:1280px;margin:0 auto;padding:8px 22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);}
+.strip .lbl{text-transform:uppercase;letter-spacing:.06em;font-weight:700;font-size:10px;color:#6f6d68;}
+
+/* ---------- generic ---------- */
+.view{display:none;padding-top:20px;}
+.view.on{display:block;}
+.panel{background:var(--surface-1);border:1px solid var(--border);border-radius:13px;padding:17px 18px;}
+.panel h2{font-size:13.5px;margin:0 0 3px;font-weight:660;letter-spacing:-0.01em;display:flex;align-items:center;gap:8px;}
+.panel .desc{font-size:11.5px;color:var(--muted);margin:0 0 16px;}
+.hint{font-size:11px;color:var(--muted);}
+.sec-title{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;margin:0 0 11px;}
+.chip{font-size:10.5px;padding:2px 8px;border-radius:20px;font-weight:660;letter-spacing:.01em;}
+.chip.good{background:rgba(37,181,37,.14);color:#4ccc4c;}
+.chip.warn{background:rgba(250,178,25,.15);color:var(--warn);}
+.chip.crit{background:rgba(224,75,75,.16);color:#f07b7b;}
+.chip.neu{background:var(--surface-3);color:var(--text-2);}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px;}
+.tile{background:var(--surface-1);border:1px solid var(--border);border-radius:13px;padding:15px 16px;position:relative;overflow:hidden;}
+.tile .label{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;font-weight:660;}
+.tile .val{font-size:28px;font-weight:680;letter-spacing:-0.025em;line-height:1;}
+.tile .val small{font-size:14px;color:var(--text-2);font-weight:500;letter-spacing:0;}
+.tile .meta{font-size:11.5px;color:var(--text-2);margin-top:9px;display:flex;align-items:center;gap:6px;}
+.tile.flash{animation:flash 1s ease-out;}
+@keyframes flash{0%{background:rgba(224,75,75,.22);}100%{background:var(--surface-1);}}
+.spark{position:absolute;right:0;bottom:0;left:0;height:34px;opacity:.5;}
+
+/* ---------- live grid ---------- */
+.grid-2{display:grid;grid-template-columns:1.15fr .85fr;gap:12px;margin-bottom:12px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;}
+
+/* session stream */
+.sess{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border-2);font-size:12.5px;}
+.sess:last-child{border:none;}
+.sess .st{flex:none;width:8px;height:8px;border-radius:50%;margin-top:6px;}
+.sess .who{font-weight:600;}
+.sess .det{color:var(--muted);font-size:11px;margin-top:2px;display:flex;gap:7px;flex-wrap:wrap;}
+.sess .cost{margin-left:auto;flex:none;font-family:var(--mono);font-size:12px;color:var(--text-2);text-align:right;}
+.tok{background:var(--surface-2);border-radius:4px;padding:1px 6px;font-size:10.5px;color:var(--text-2);}
+.sess.new{animation:slidein .45s ease-out;}
+@keyframes slidein{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+
+/* enforcement feed */
+.evt{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border-2);font-size:12px;}
+.evt:last-child{border:none;}
+.evt .tag{flex:none;font-size:9.5px;font-weight:800;padding:3px 7px;border-radius:5px;height:fit-content;letter-spacing:.03em;}
+.tag.blocked{background:rgba(224,75,75,.16);color:#f07b7b;}
+.tag.throttled{background:rgba(250,178,25,.15);color:var(--warn);}
+.tag.routed{background:rgba(57,135,229,.15);color:#6ba9ee;}
+.tag.alert{background:rgba(160,107,212,.16);color:#bb90e2;}
+.evt .body{color:var(--text-2);min-width:0;}
+.evt .body b{color:var(--text);font-weight:620;}
+.evt .why{color:var(--muted);font-size:11px;margin-top:3px;line-height:1.4;}
+.evt .why code{font-family:var(--mono);font-size:10.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;color:#a8c6ea;}
+.evt .t{margin-left:auto;color:var(--muted);font-size:10.5px;flex:none;font-family:var(--mono);}
+
+/* meters */
+.meter{margin-bottom:15px;}
+.meter:last-child{margin-bottom:0;}
+.meter-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;margin-bottom:6px;gap:10px;}
+.meter-top .nm{font-weight:600;}
+.meter-top .nm span{color:var(--muted);font-weight:400;font-size:11px;margin-left:6px;}
+.meter-top .amt{font-family:var(--mono);color:var(--text-2);font-size:11.5px;flex:none;}
+.track{height:9px;border-radius:6px;background:var(--surface-3);overflow:hidden;position:relative;}
+.fill{height:100%;border-radius:6px;transition:width .5s ease;}
+.meter-cap{font-size:10.5px;color:var(--muted);margin-top:5px;}
+
+/* ---------- tables ---------- */
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;padding:0 10px 9px;border-bottom:1px solid var(--border);white-space:nowrap;}
+th.r,td.r{text-align:right;}
+td{padding:11px 10px;border-bottom:1px solid var(--border-2);vertical-align:middle;}
+tbody tr{cursor:pointer;transition:background .12s;}
+tbody tr:hover{background:var(--surface-2);}
+tbody tr.sel{background:var(--surface-2);}
+.cust{display:flex;align-items:center;gap:9px;}
+.av{width:24px;height:24px;border-radius:6px;flex:none;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;}
+.plan{font-size:10px;color:var(--muted);}
+.mbar{height:7px;border-radius:4px;background:var(--surface-3);width:88px;overflow:hidden;position:relative;display:inline-block;vertical-align:middle;margin-right:8px;}
+.mbar i{position:absolute;top:0;bottom:0;left:50%;display:block;}
+.mzero{position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--muted);opacity:.55;}
+
+/* ---------- drawer ---------- */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:.2s;z-index:60;}
+.scrim.on{opacity:1;pointer-events:auto;}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,94vw);background:var(--surface-1);border-left:1px solid var(--border);z-index:61;transform:translateX(100%);transition:transform .26s cubic-bezier(.3,.8,.4,1);overflow-y:auto;}
+.drawer.on{transform:none;}
+.drawer-in{padding:22px 24px 40px;}
+.drawer-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;}
+.x{margin-left:auto;background:none;border:none;color:var(--muted);font-size:20px;line-height:1;padding:2px 6px;border-radius:6px;}
+.x:hover{background:var(--surface-3);color:var(--text);}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.stat{background:var(--surface-2);border-radius:10px;padding:12px 13px;}
+.stat .l{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:6px;}
+.stat .v{font-size:19px;font-weight:670;letter-spacing:-.02em;}
+
+/* ---------- bars / charts ---------- */
+.stackbar{display:flex;height:26px;border-radius:7px;overflow:hidden;gap:2px;margin-bottom:9px;}
+.stackbar div{display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:#fff;min-width:0;white-space:nowrap;overflow:hidden;}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:11.5px;color:var(--text-2);}
+.legend i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:6px;vertical-align:middle;}
+.rowbar{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:12px;}
+.rowbar .nm{width:132px;flex:none;color:var(--text-2);}
+.rowbar .bar{flex:1;height:20px;background:var(--surface-3);border-radius:5px;overflow:hidden;}
+.rowbar .bar i{display:block;height:100%;border-radius:5px;}
+.rowbar .v{width:78px;flex:none;text-align:right;font-family:var(--mono);font-size:11.5px;color:var(--text-2);}
+
+/* ---------- callouts ---------- */
+.call{border-radius:11px;padding:14px 16px;font-size:12.5px;line-height:1.55;margin-bottom:12px;border:1px solid;}
+.call.blue{background:rgba(57,135,229,.09);border-color:rgba(57,135,229,.3);color:#cfe0f5;}
+.call.red{background:rgba(224,75,75,.09);border-color:rgba(224,75,75,.3);color:#f2cfcf;}
+.call.amber{background:rgba(250,178,25,.09);border-color:rgba(250,178,25,.3);color:#f3e2c2;}
+.call b{color:#fff;}
+
+/* ---------- presenter ---------- */
+.presenter{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(20,20,19,.97);border-top:2px solid var(--s4);backdrop-filter:blur(8px);transform:translateY(100%);transition:transform .25s;}
+.presenter.on{transform:none;}
+.presenter-in{max-width:1280px;margin:0 auto;padding:14px 22px 16px;display:flex;gap:18px;align-items:flex-start;}
+.presenter .k{flex:none;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--s4);background:rgba(201,133,0,.14);padding:4px 9px;border-radius:6px;margin-top:2px;}
+.presenter .txt{font-size:13px;line-height:1.6;color:var(--text-2);}
+.presenter .txt b{color:#fff;}
+.presenter .txt .say{color:#fff;font-weight:560;}
+
+/* ---------- legacy overlay ---------- */
+.legacy-note{display:none;}
+body.legacy .legacy-hide{opacity:.07;pointer-events:none;filter:grayscale(1);}
+body.legacy .legacy-note{display:block;}
+
+@media (max-width:1000px){
+  .kpis{grid-template-columns:repeat(2,1fr);}
+  .grid-2,.grid-3{grid-template-columns:1fr;}
+  .tabs{overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="logo">L</div>
+      <div>
+        <h1>Ledger</h1>
+        <div class="sub">AI cost governance</div>
+      </div>
+    </div>
+    <div class="tabs" id="tabs">
+      <button class="tab on" data-v="live">Live console</button>
+      <button class="tab" data-v="econ">Unit economics</button>
+      <button class="tab" data-v="attr">Cost attribution</button>
+      <button class="tab" data-v="board">Board report</button>
+    </div>
+    <div class="topright">
+      <div class="live" id="liveInd"><span class="dot"></span><span id="liveTxt">Live</span></div>
+      <div class="org">Northwind AI · 140 people</div>
+    </div>
+  </div>
+</div>
+
+<div class="strip">
+  <div class="strip-in">
+    <span class="lbl">Demo controls</span>
+    <button class="btn" id="btnPlay">⏸ Pause stream</button>
+    <button class="btn danger" id="btnRunaway">⚡ Trigger runaway session</button>
+    <button class="btn" id="btnLegacy">👁 Compare: legacy billing view</button>
+    <button class="btn" id="btnScript">🇰🇷 발표 스크립트</button>
+    <span style="margin-left:auto" id="clock" class="num">—</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ===================== LIVE ===================== -->
+<div class="view on" id="v-live">
+  <div class="call red legacy-note">
+    <b>Legacy view — this is what your billing dashboard shows.</b> One number, 14 days late, LLM vendors only.
+    You cannot answer "which customer caused this?", "which feature?", or "can I still ship the price change on Monday?"
+    Everything greyed out below is what Ledger adds. Click <b>Compare: legacy billing view</b> again to bring it back.
+  </div>
+
+  <div class="kpis">
+    <div class="tile" id="kpiSpend">
+      <div class="label">AI spend · month to date</div>
+      <div class="val num">$<span id="mtdSpend">0</span></div>
+      <div class="meta"><span class="chip warn" id="mtdPace">—</span> <span id="mtdSub">of $186,000 budget</span></div>
+      <svg class="spark" id="sparkSpend" preserveAspectRatio="none" viewBox="0 0 300 34"></svg>
+    </div>
+    <div class="tile legacy-hide">
+      <div class="label">Cost per request · live</div>
+      <div class="val num">$<span id="cpr">0.000</span></div>
+      <div class="meta"><span id="cprDelta" class="chip neu">—</span> <span>vs 7-day median</span></div>
+    </div>
+    <div class="tile legacy-hide">
+      <div class="label">AI COGS as % of revenue</div>
+      <div class="val num"><span id="cogsPct">0</span><small>%</small></div>
+      <div class="meta"><span class="chip crit">Threshold 20%</span> <span>sustainable-SaaS line</span></div>
+    </div>
+    <div class="tile legacy-hide" id="kpiBlocked">
+      <div class="label">Spend blocked before execution</div>
+      <div class="val num">$<span id="blockedAmt">0</span></div>
+      <div class="meta"><span id="blockedN">0</span> <span>policy stops this month</span></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel legacy-hide">
+      <h2>◧ Live agent sessions</h2>
+      <p class="desc">Every request tagged to a customer, a feature, and every downstream call it triggers — LLM, tool, and third-party API.</p>
+      <div id="sessions"></div>
+    </div>
+    <div class="panel legacy-hide">
+      <h2>◭ Budget policy · evaluated before execution</h2>
+      <p class="desc">Hard limits per customer and per feature. Requests over the line never reach the provider.</p>
+      <div id="meters"></div>
+    </div>
+  </div>
+
+  <div class="panel legacy-hide">
+    <h2>⛊ Enforcement feed <span class="chip neu">audit-grade</span></h2>
+    <p class="desc">Every stop carries the reason, the policy that fired, and the exact spend avoided — exportable for finance and board review.</p>
+    <div id="feed"></div>
+  </div>
+</div>
+
+<!-- ===================== UNIT ECONOMICS ===================== -->
+<div class="view" id="v-econ">
+  <div class="call blue">
+    <b>The question billing data can never answer:</b> what does one customer actually cost us to serve this month —
+    and are we still making money on them? Click any row for the full breakdown.
+  </div>
+
+  <div class="grid-3">
+    <div class="panel">
+      <div class="label sec-title">Customers served at a loss</div>
+      <div style="font-size:30px;font-weight:680;letter-spacing:-.025em;">3 <span style="font-size:14px;color:var(--muted);font-weight:500;">of 42</span></div>
+      <div class="hint" style="margin-top:8px;">−$7,755/mo contribution, all on Growth and Starter plans priced before agent features shipped</div>
+    </div>
+    <div class="panel">
+      <div class="label sec-title">Blended AI-COGS margin</div>
+      <div style="font-size:30px;font-weight:680;letter-spacing:-.025em;">78.6<span style="font-size:16px;color:var(--muted);">%</span></div>
+      <div class="hint" style="margin-top:8px;">Down from 88.8% two quarters ago — agent features carry 3.1× the COGS of the old chat product</div>
+    </div>
+    <div class="panel">
+      <div class="label sec-title">Worst unit: cost per resolved ticket</div>
+      <div style="font-size:30px;font-weight:680;letter-spacing:-.025em;">$3.41</div>
+      <div class="hint" style="margin-top:8px;">Cobalt Retail — 6.2× the account median of $0.55</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>◫ Per-customer AI unit economics <span class="chip neu">month to date · day 19</span></h2>
+    <p class="desc">Plan price versus everything that customer's usage actually costs — LLM tokens, tool calls, and third-party APIs combined.</p>
+    <table>
+      <thead><tr>
+        <th>Customer</th><th class="r">Plan MRR</th><th class="r">AI cost MTD</th>
+        <th class="r">Cost / request</th><th>AI-COGS margin</th><th class="r">Trend</th>
+      </tr></thead>
+      <tbody id="custRows"></tbody>
+    </table>
+    <div class="hint" style="margin-top:14px;">Top 10 accounts = 98% of AI COGS · + 32 accounts below $500 AI cost each ($2,030 combined)</div>
+  </div>
+</div>
+
+<!-- ===================== ATTRIBUTION ===================== -->
+<div class="view" id="v-attr">
+  <div class="call amber">
+    <b>39% of your AI COGS is not on any LLM invoice.</b> Speech, search, enrichment, crawling and vector storage are called
+    autonomously by your agents and billed by six separate vendors. An LLM gateway cannot see them. This is the number
+    finance has to defend to the board.
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <h2>◈ Where the money actually goes</h2>
+      <p class="desc">Month-to-date spend by cost source, reconstructed from execution traces — not from vendor invoices.</p>
+      <div class="stackbar" id="srcBar"></div>
+      <div class="legend" id="srcLegend"></div>
+      <div style="margin-top:22px;">
+        <div class="sec-title">By vendor</div>
+        <div id="vendorRows"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>◨ Cost by product feature</h2>
+      <p class="desc">Which part of the product is eating the margin — and how much of it is non-LLM.</p>
+      <div id="featRows"></div>
+      <div class="call red" style="margin-top:18px;margin-bottom:0;">
+        <b>Voice Agent</b> is 38% of AI COGS but only 12% of revenue-weighted usage.
+        Its cost is <b>71% non-LLM</b> — speech-to-text, text-to-speech and telephony minutes.
+        Nobody would find this in a token dashboard.
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>⛁ One request, fully attributed</h2>
+    <p class="desc">A single end-user message, expanded to every downstream call the agent decided to make. This is the primitive everything above is built from.</p>
+    <div id="trace"></div>
+  </div>
+</div>
+
+<!-- ===================== BOARD ===================== -->
+<div class="view" id="v-board">
+  <div class="call blue">
+    <b>The recurring need.</b> Cost spikes are episodic. This report is not — it goes into the monthly close, the pricing review,
+    and the next diligence data room. That is why it does not get cancelled.
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <h2>◐ AI COGS as % of revenue</h2>
+      <p class="desc">Trailing six months against the 20% sustainability line most AI-native SaaS underwrites to.</p>
+      <svg id="cogsChart" viewBox="0 0 560 220" style="width:100%;height:auto;"></svg>
+    </div>
+    <div class="panel">
+      <h2>◑ Cohort benchmark <span class="chip neu">anonymised</span></h2>
+      <p class="desc">Your cost per resolved request against 40+ Series A–C AI companies of similar shape on Ledger.</p>
+      <svg id="benchChart" viewBox="0 0 560 220" style="width:100%;height:auto;"></svg>
+      <div class="hint" style="margin-top:10px;">You sit at the <b style="color:#fff;">78th percentile</b> — costlier than 78% of comparable teams. The gap is concentrated in Voice Agent.</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>◎ What changed this month — the explanation, not the number</h2>
+    <p class="desc">Auto-generated variance analysis. Every line traces back to execution records.</p>
+    <div id="variance"></div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer"><div class="drawer-in" id="drawerIn"></div></aside>
+
+<div class="presenter" id="presenter">
+  <div class="presenter-in">
+    <div class="k" id="presKey">Live console</div>
+    <div class="txt" id="presTxt"></div>
+    <button class="x" id="presX">×</button>
+  </div>
+</div>
+<script>
+"use strict";
+/* =========================================================
+   Ledger — AI Cost Governance demo
+   All data below is a simulated scenario for demo purposes.
+   ========================================================= */
+
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const money = n => n.toLocaleString('en-US',{maximumFractionDigits:0});
+const money2 = n => n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const pad = n => String(n).padStart(2,'0');
+
+const DAY = 19, DAYS = 31, PROJ = DAYS/DAY;   // month-to-date scaling
+
+/* ---------- cost sources ---------- */
+const SOURCES = [
+  {k:'llm',   n:'LLM tokens',          pct:61, col:'var(--s1)'},
+  {k:'voice', n:'Speech & telephony',  pct:19, col:'var(--s2)'},
+  {k:'search',n:'Search & crawl',      pct:9,  col:'var(--s3)'},
+  {k:'infra', n:'Vector & compute',    pct:8,  col:'var(--s5)'},
+  {k:'other', n:'Other APIs',          pct:3,  col:'#6b6a65'}
+];
+const VENDORS = [
+  {n:'OpenAI',        v:36700, c:'var(--s1)'},
+  {n:'Anthropic',     v:28400, c:'var(--s1)'},
+  {n:'Deepgram (STT/TTS)', v:13000, c:'var(--s2)'},
+  {n:'Twilio (telephony)', v:9500, c:'var(--s2)'},
+  {n:'Google Vertex', v:7100,  c:'var(--s1)'},
+  {n:'Serper (search)', v:5900, c:'var(--s3)'},
+  {n:'Firecrawl',     v:4700,  c:'var(--s3)'},
+  {n:'Pinecone',      v:4700,  c:'var(--s5)'},
+  {n:'Modal (sandbox)', v:4700, c:'var(--s5)'},
+  {n:'Others (6)',    v:3700,  c:'#6b6a65'}
+];
+const FEATURES = [
+  {n:'Voice Agent',      v:44990, nonllm:71},
+  {n:'Doc Extraction',   v:26050, nonllm:24},
+  {n:'Support Copilot',  v:22500, nonllm:31},
+  {n:'Batch Enrichment', v:16580, nonllm:46},
+  {n:'Analytics QA',     v:8290,  nonllm:12}
+];
+
+/* ---------- customers ---------- */
+const CUST = [
+  {id:'sunfield', n:'Sunfield Bank',    ini:'SB', c:'#3987e5', plan:'Enterprise', mrr:112000, cost:22900, cpr:0.031, trend:-4,
+   feat:{'Voice Agent':58,'Doc Extraction':22,'Support Copilot':12,'Analytics QA':8}, note:'Healthy. Voice minutes are high but the contract prices them in.'},
+  {id:'vertex',  n:'Vertex Logistics',  ini:'VL', c:'#199e70', plan:'Enterprise', mrr:96000,  cost:27100, cpr:0.052, trend:11,
+   feat:{'Voice Agent':44,'Batch Enrichment':28,'Doc Extraction':18,'Support Copilot':10}, note:'Watch. +11% MoM on enrichment volume with no contract change.'},
+  {id:'halden',  n:'Halden Group',      ini:'HG', c:'#c98500', plan:'Enterprise', mrr:78000,  cost:18300, cpr:0.038, trend:2,
+   feat:{'Doc Extraction':46,'Support Copilot':30,'Voice Agent':14,'Analytics QA':10}, note:'Stable and profitable across every feature.'},
+  {id:'cobalt',  n:'Cobalt Retail',     ini:'CR', c:'#e04b4b', plan:'Growth', mrr:21000, cost:14900, cpr:0.214, trend:64,
+   feat:{'Batch Enrichment':62,'Voice Agent':21,'Support Copilot':11,'Analytics QA':6},
+   note:'Losing money. 61% of enrichment calls this month were retries of failed extractions — the agent re-ran the same 4,100 SKUs up to 9 times.'},
+  {id:'arcadia', n:'Arcadia Foods',     ini:'AF', c:'#a06bd4', plan:'Growth', mrr:34000, cost:6700, cpr:0.061, trend:7,
+   feat:{'Support Copilot':41,'Doc Extraction':33,'Voice Agent':17,'Analytics QA':9}, note:'Comfortable margin, room to upsell voice.'},
+  {id:'bloom',   n:'Bloom Health',      ini:'BH', c:'#d95926', plan:'Growth', mrr:29000, cost:5700, cpr:0.044, trend:-2,
+   feat:{'Doc Extraction':52,'Support Copilot':28,'Analytics QA':20}, note:'Best-in-cohort cost per request. Reference account.'},
+  {id:'meridian',n:'Meridian Legal',    ini:'ML', c:'#e04b4b', plan:'Growth', mrr:19000, cost:12900, cpr:0.148, trend:38,
+   feat:{'Doc Extraction':64,'Support Copilot':24,'Analytics QA':12},
+   note:'Losing money. 400-page filings run the full frontier model on every page; no size-based routing is applied.'},
+  {id:'pine',    n:'Pine & Co',         ini:'PC', c:'#e04b4b', plan:'Starter', mrr:6400, cost:5400, cpr:0.176, trend:21,
+   feat:{'Voice Agent':68,'Support Copilot':22,'Analytics QA':10},
+   note:'Losing money. A Starter plan running the voice agent — the plan was priced before voice shipped.'},
+  {id:'lumen',   n:'Lumen Ed',          ini:'LE', c:'#199e70', plan:'Starter', mrr:6400, cost:930, cpr:0.022, trend:0,
+   feat:{'Support Copilot':58,'Analytics QA':42}, note:'Light usage, high margin.'},
+  {id:'tallow',  n:'Tallow Media',      ini:'TM', c:'#3987e5', plan:'Starter', mrr:6400, cost:1540, cpr:0.029, trend:5,
+   feat:{'Doc Extraction':49,'Support Copilot':39,'Analytics QA':12}, note:'Normal.'}
+];
+const marginOf = c => (c.mrr - c.cost*PROJ) / c.mrr * 100;
+
+/* ---------- live state ---------- */
+const S = {
+  spend: 118400, blocked: 8940, blockedN: 23, cpr: 0.041,
+  running: true, runaway: false, runawayStep: 0,
+  t: 14*3600 + 32*60, spark: [], view:'live', legacy:false, pres:false
+};
+for(let i=0;i<60;i++) S.spark.push(38 + Math.sin(i/5)*9 + Math.random()*10);
+
+const NAMES = CUST.filter(c=>c.id!=='cobalt');
+const FEATNAMES = ['Voice Agent','Doc Extraction','Support Copilot','Batch Enrichment','Analytics QA'];
+const MODELS = ['claude-sonnet-4','gpt-4o','gpt-4o-mini','gemini-2.5-flash','claude-haiku-4'];
+const TOOLS  = ['web.search','crawl.fetch','vector.query','code.exec','stt.stream','tts.synth','crm.lookup'];
+const pick = a => a[Math.floor(Math.random()*a.length)];
+
+/* =========================================================
+   TABS
+   ========================================================= */
+$('#tabs').addEventListener('click', e => {
+  const b = e.target.closest('.tab'); if(!b) return;
+  S.view = b.dataset.v;
+  $$('.tab').forEach(t=>t.classList.toggle('on', t===b));
+  $$('.view').forEach(v=>v.classList.toggle('on', v.id==='v-'+S.view));
+  renderPresenter();
+});
+
+/* =========================================================
+   LIVE CONSOLE
+   ========================================================= */
+function renderKpis(){
+  $('#mtdSpend').textContent = money(S.spend);
+  const pace = S.spend*PROJ;
+  const pc = $('#mtdPace');
+  pc.textContent = (pace>186000?'+':'') + Math.round((pace/186000-1)*100) + '% vs budget pace';
+  pc.className = 'chip ' + (pace>186000?'crit':'good');
+  $('#blockedAmt').textContent = money(S.blocked);
+  $('#blockedN').textContent = S.blockedN;
+  $('#cpr').textContent = S.cpr.toFixed(3);
+  const d = (S.cpr/0.038 - 1)*100;
+  const cd = $('#cprDelta');
+  cd.textContent = (d>0?'+':'') + d.toFixed(0) + '%';
+  cd.className = 'chip ' + (d>25?'crit': d>8?'warn':'good');
+  $('#cogsPct').textContent = (S.spend*PROJ/902000*100).toFixed(1);
+  drawSpark();
+}
+function drawSpark(){
+  const w=300,h=34, d=S.spark, mx=Math.max(...d), mn=Math.min(...d);
+  const pts = d.map((v,i)=>`${(i/(d.length-1)*w).toFixed(1)},${(h - (v-mn)/(mx-mn+.001)*(h-4) - 2).toFixed(1)}`).join(' ');
+  $('#sparkSpend').innerHTML =
+    `<polygon points="0,${h} ${pts} ${w},${h}" fill="rgba(57,135,229,.16)"/>`+
+    `<polyline points="${pts}" fill="none" stroke="var(--s1)" stroke-width="1.6"/>`;
+}
+
+const METERS = [
+  {n:'Cobalt Retail', s:'customer budget', used:14900, cap:16000},
+  {n:'Batch Enrichment', s:'feature budget', used:16580, cap:18000},
+  {n:'Meridian Legal', s:'customer budget', used:12900, cap:14000},
+  {n:'Voice Agent', s:'feature budget', used:44990, cap:52000},
+  {n:'Sunfield Bank', s:'customer budget', used:22900, cap:40000}
+];
+function renderMeters(){
+  $('#meters').innerHTML = METERS.map(m=>{
+    const p = Math.min(100, m.used/m.cap*100);
+    const col = p>=100?'var(--crit)': p>=90?'var(--warn)':'var(--s3)';
+    const cap = p>=100 ? '<span style="color:var(--crit);font-weight:600;">Limit reached — new requests are refused before execution</span>'
+              : p>=90 ? 'Soft limit crossed · frontier models auto-downgraded'
+              : 'Within policy';
+    return `<div class="meter">
+      <div class="meter-top"><div class="nm">${m.n}<span>${m.s}</span></div>
+        <div class="amt">$${money(m.used)} / $${money(m.cap)}</div></div>
+      <div class="track"><i class="fill" style="width:${p}%;background:${col};display:block;"></i></div>
+      <div class="meter-cap">${cap}</div></div>`;
+  }).join('');
+}
+
+const FEED = [];
+function pushEvent(tag, body, why, ts){
+  FEED.unshift({tag, body, why, t: ts || clockStr()});
+  if(FEED.length>7) FEED.pop();
+  $('#feed').innerHTML = FEED.map(e=>`<div class="evt">
+    <span class="tag ${e.tag.toLowerCase()}">${e.tag}</span>
+    <div class="body">${e.body}<div class="why">${e.why}</div></div>
+    <span class="t">${e.t}</span></div>`).join('');
+}
+
+const SESS = [];
+function pushSession(s){
+  SESS.unshift(s); if(SESS.length>7) SESS.pop();
+  $('#sessions').innerHTML = SESS.map((x,i)=>`<div class="sess ${i===0?'new':''}">
+    <span class="st" style="background:${x.col}"></span>
+    <div style="min-width:0">
+      <div class="who">${x.cust} <span style="color:var(--muted);font-weight:400">·</span> ${x.feat}</div>
+      <div class="det"><span class="tok">${x.model}</span><span class="tok">${x.tin} in / ${x.tout} out</span>
+        ${x.tools.map(t=>`<span class="tok">${t}</span>`).join('')}</div>
+    </div>
+    <div class="cost">$${money2(x.cost)}<div style="color:var(--muted);font-size:10px;">${x.nonllm}% non-LLM</div></div>
+  </div>`).join('');
+}
+function clockStr(){
+  const h = Math.floor(S.t/3600)%24, m = Math.floor(S.t/60)%60, s = S.t%60;
+  return `${pad(h)}:${pad(m)}:${pad(s)}`;
+}
+function randomSession(){
+  const c = pick(NAMES), f = pick(FEATNAMES);
+  const tin = 900 + Math.floor(Math.random()*7000), tout = 120 + Math.floor(Math.random()*900);
+  const nTools = 1 + Math.floor(Math.random()*3);
+  const tools = []; for(let i=0;i<nTools;i++){ const t=pick(TOOLS); if(!tools.includes(t)) tools.push(t); }
+  const cost = 0.006 + Math.random()*0.09;
+  return {cust:c.n, col:c.c, feat:f, model:pick(MODELS), tin:tin.toLocaleString(), tout, tools,
+          cost, nonllm: 12 + Math.floor(Math.random()*58)};
+}
+
+/* =========================================================
+   TICK
+   ========================================================= */
+function tick(){
+  if(!S.running) return;
+  S.t += 3;
+  $('#clock').textContent = 'Simulated clock · ' + clockStr() + ' PDT · day 19 of 31';
+
+  const n = 1 + Math.floor(Math.random()*2);
+  for(let i=0;i<n;i++) pushSession(randomSession());
+
+  let add = 14 + Math.random()*26;
+  if(S.runaway){ add += 90 + S.runawayStep*55; }
+  S.spend += add;
+  S.spark.push(add*1.4); if(S.spark.length>60) S.spark.shift();
+  S.cpr = S.runaway ? Math.min(0.34, S.cpr*1.16) : (S.cpr*0.94 + 0.041*0.06);
+
+  if(Math.random()<0.22 && !S.runaway){
+    const c = pick(NAMES);
+    pushEvent('ROUTED', `<b>${c.n}</b> · Support Copilot request downgraded to <b>gpt-4o-mini</b>`,
+      `Feature budget at 91% of cap. Complexity score 0.24 — below the frontier-model threshold. Quality delta measured at −0.3% on the eval set.`);
+  }
+  renderKpis();
+  runawayStep();
+}
+
+/* ---------- scripted incident ---------- */
+function runawayStep(){
+  if(!S.runaway) return;
+  S.runawayStep++;
+  const st = S.runawayStep;
+  const cob = CUST.find(c=>c.id==='cobalt');
+
+  if(st===1){
+    pushSession({cust:'Cobalt Retail', col:'#e04b4b', feat:'Batch Enrichment', model:'claude-sonnet-4',
+      tin:'11,400', tout:1820, tools:['crawl.fetch','vector.query'], cost:0.71, nonllm:44});
+    pushEvent('ALERT', `<b>Cobalt Retail</b> · Batch Enrichment burn rate <b>8.4× baseline</b>`,
+      `Same 4,100 SKUs re-submitted for the 6th time in 40 minutes. Extraction is failing on a changed page layout and the agent is retrying without backoff. Projected spend if unchecked: <code>$2,180 / hour</code>.`);
+  }
+  if(st===2){
+    for(let i=0;i<3;i++) pushSession({cust:'Cobalt Retail', col:'#e04b4b', feat:'Batch Enrichment',
+      model:'claude-sonnet-4', tin:'12,900', tout:2140, tools:['crawl.fetch'], cost:0.83+i*0.06, nonllm:46});
+    pushEvent('THROTTLED', `<b>Cobalt Retail</b> · concurrency cut 32 → 4, frontier model downgraded`,
+      `Soft limit at 93% of the $16,000 monthly customer budget. Graduated response applied first so live traffic is not interrupted.`);
+    METERS[0].used = 15850; METERS[1].used = 17600; renderMeters();
+  }
+  if(st===3){
+    pushEvent('BLOCKED', `<b>Cobalt Retail</b> · Batch Enrichment halted before execution — <b>$2,180 avoided</b>`,
+      `Policy <code>budget.customer.hard</code> fired at $16,000 / $16,000. 1,412 queued calls refused at the gate, so nothing reached OpenAI, Firecrawl or Pinecone. Reason, policy id and trace ids written to the audit log; owner notified in #eng-oncall. Retry cap of 3 now applied to this job.`);
+    S.blocked += 2180; S.blockedN += 1;
+    METERS[0].used = 16000; renderMeters();
+    const t = $('#kpiBlocked'); t.classList.remove('flash'); void t.offsetWidth; t.classList.add('flash');
+    $('#btnRunaway').textContent = '⚡ Trigger runaway session';
+    $('#btnRunaway').disabled = false;
+  }
+  if(st>=4){ S.runaway = false; S.runawayStep = 0; }
+}
+
+$('#btnRunaway').addEventListener('click', ()=>{
+  if(S.runaway) return;
+  S.runaway = true; S.runawayStep = 0;
+  S.running = true; setPlay();
+  $('#btnRunaway').textContent = '⚡ Runaway in progress…';
+  $('#btnRunaway').disabled = true;
+  if(S.view!=='live') $$('.tab').find(t=>t.dataset.v==='live').click();
+});
+
+function setPlay(){
+  $('#btnPlay').textContent = S.running ? '⏸ Pause stream' : '▶ Resume stream';
+  $('#liveInd').classList.toggle('paused', !S.running);
+  $('#liveTxt').textContent = S.running ? 'Live' : 'Paused';
+}
+$('#btnPlay').addEventListener('click', ()=>{ S.running=!S.running; setPlay(); });
+
+$('#btnLegacy').addEventListener('click', ()=>{
+  S.legacy=!S.legacy;
+  document.body.classList.toggle('legacy', S.legacy);
+  $('#btnLegacy').classList.toggle('on', S.legacy);
+  if(S.legacy && S.view!=='live') $$('.tab').find(t=>t.dataset.v==='live').click();
+});
+
+/* =========================================================
+   UNIT ECONOMICS
+   ========================================================= */
+function renderCustomers(){
+  $('#custRows').innerHTML = CUST.map(c=>{
+    const m = marginOf(c);
+    const neg = m<0;
+    const w = Math.min(48, Math.abs(m)/100*96);
+    const bar = neg
+      ? `<i style="background:var(--crit);left:${50-w}%;width:${w}%"></i>`
+      : `<i style="background:var(--s3);left:50%;width:${w}%"></i>`;
+    const tr = c.trend>15?'crit':c.trend>5?'warn':'good';
+    return `<tr data-id="${c.id}">
+      <td><div class="cust"><div class="av" style="background:${c.c}">${c.ini}</div>
+        <div><div style="font-weight:600">${c.n}</div><div class="plan">${c.plan}</div></div></div></td>
+      <td class="r num">$${money(c.mrr)}</td>
+      <td class="r num">$${money(c.cost)}</td>
+      <td class="r num">$${c.cpr.toFixed(3)}</td>
+      <td><span class="mbar">${bar}<span class="mzero"></span></span>
+        <span class="num" style="font-weight:640;color:${neg?'#f07b7b':'#fff'}">${m>0?'+':''}${m.toFixed(1)}%</span></td>
+      <td class="r"><span class="chip ${tr}">${c.trend>0?'+':''}${c.trend}%</span></td>
+    </tr>`;
+  }).join('');
+  $$('#custRows tr').forEach(r=>r.addEventListener('click',()=>openDrawer(r.dataset.id)));
+}
+
+function openDrawer(id){
+  const c = CUST.find(x=>x.id===id); if(!c) return;
+  const m = marginOf(c);
+  const feats = Object.entries(c.feat).sort((a,b)=>b[1]-a[1]);
+  const nonllm = Math.round(feats.reduce((s,[k,v])=>{
+    const f = FEATURES.find(f=>f.n===k); return s + v*(f?f.nonllm:30)/100; },0));
+  $('#drawerIn').innerHTML = `
+    <div class="drawer-head">
+      <div class="av" style="width:38px;height:38px;border-radius:9px;font-size:13px;background:${c.c}">${c.ini}</div>
+      <div><div style="font-size:17px;font-weight:670;letter-spacing:-.02em">${c.n}</div>
+        <div class="hint">${c.plan} plan · account since Mar 2025 · 214 seats</div></div>
+      <button class="x" onclick="closeDrawer()">×</button>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="l">Plan MRR</div><div class="v num">$${money(c.mrr)}</div></div>
+      <div class="stat"><div class="l">AI cost (projected)</div><div class="v num">$${money(Math.round(c.cost*PROJ))}</div></div>
+      <div class="stat"><div class="l">AI-COGS margin</div>
+        <div class="v num" style="color:${m<0?'#f07b7b':'#4ccc4c'}">${m>0?'+':''}${m.toFixed(1)}%</div></div>
+    </div>
+    ${m<0?`<div class="call red">This account currently costs <b>$${money(Math.round(c.cost*PROJ - c.mrr))}/month more than it pays</b>. ${c.note}</div>`
+         :`<div class="call blue">${c.note}</div>`}
+    <div class="sec-title" style="margin-top:20px">Cost by feature</div>
+    ${feats.map(([k,v])=>{
+      const f = FEATURES.find(f=>f.n===k);
+      return `<div class="rowbar"><div class="nm">${k}</div>
+        <div class="bar"><i style="width:${v}%;background:${c.c};opacity:.85"></i></div>
+        <div class="v">$${money(Math.round(c.cost*v/100))}</div></div>
+        <div class="hint" style="margin:-6px 0 12px 142px">${f?f.nonllm:30}% of this is non-LLM spend</div>`;
+    }).join('')}
+    <div class="sec-title" style="margin-top:18px">Where the money leaves the building</div>
+    <div class="stackbar">${SOURCES.map(s=>`<div style="width:${s.pct}%;background:${s.col}">${s.pct>=8?s.pct+'%':''}</div>`).join('')}</div>
+    <div class="legend">${SOURCES.map(s=>`<span><i style="background:${s.col}"></i>${s.n}</span>`).join('')}</div>
+    <div class="call ${m<0?'red':'blue'}" style="margin-top:22px">
+      <b>Recommended action.</b> ${m<0
+        ? `Re-price at $${money(Math.ceil(c.cost*PROJ*1.9/1000)*1000)}/mo or move this workload to the routed tier. ${nonllm}% of the cost is non-LLM, so a token discount from your model vendor would not fix it.`
+        : `Headroom for expansion. This account can absorb roughly ${Math.round((c.mrr*0.55 - c.cost*PROJ)/1000)}K more monthly AI cost before margin drops below 45%.`}
+    </div>`;
+  $('#drawer').classList.add('on'); $('#scrim').classList.add('on');
+}
+function closeDrawer(){ $('#drawer').classList.remove('on'); $('#scrim').classList.remove('on'); }
+window.closeDrawer = closeDrawer;
+$('#scrim').addEventListener('click', closeDrawer);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
+
+/* =========================================================
+   ATTRIBUTION
+   ========================================================= */
+function renderAttr(){
+  $('#srcBar').innerHTML = SOURCES.map(s=>
+    `<div style="width:${s.pct}%;background:${s.col}">${s.pct>=8?s.pct+'%':''}</div>`).join('');
+  $('#srcLegend').innerHTML = SOURCES.map(s=>
+    `<span><i style="background:${s.col}"></i>${s.n} · $${money(Math.round(118400*s.pct/100))}</span>`).join('');
+  const mx = Math.max(...VENDORS.map(v=>v.v));
+  $('#vendorRows').innerHTML = VENDORS.map(v=>`<div class="rowbar">
+    <div class="nm">${v.n}</div><div class="bar"><i style="width:${v.v/mx*100}%;background:${v.c};opacity:.85"></i></div>
+    <div class="v">$${money(v.v)}</div></div>`).join('');
+  const fm = Math.max(...FEATURES.map(f=>f.v));
+  $('#featRows').innerHTML = FEATURES.map(f=>`
+    <div class="rowbar"><div class="nm">${f.n}</div>
+      <div class="bar" style="display:flex">
+        <i style="width:${(100-f.nonllm)}%;background:var(--s1)"></i>
+        <i style="width:${f.nonllm}%;background:var(--s2)"></i>
+      </div>
+      <div class="v">$${money(f.v)}</div></div>
+    <div class="hint" style="margin:-6px 0 13px 142px">${100-f.nonllm}% LLM · <b style="color:#e8956e">${f.nonllm}% non-LLM</b> · ${(f.v/118400*100).toFixed(0)}% of total AI COGS</div>
+  `).join('');
+
+  const TRACE = [
+    ['LLM','claude-sonnet-4 · planning step','3,412 in / 612 out',0.0141,'var(--s1)'],
+    ['TOOL','vector.query · Pinecone · 12 queries','—',0.0009,'var(--s5)'],
+    ['API','web.search · Serper · 3 calls','—',0.0090,'var(--s3)'],
+    ['API','crawl.fetch · Firecrawl · 2 pages','—',0.0140,'var(--s3)'],
+    ['LLM','gpt-4o · synthesis step','8,104 in / 940 out',0.0248,'var(--s1)'],
+    ['TOOL','code.exec · Modal sandbox · 4.2s','—',0.0021,'var(--s5)'],
+    ['API','crm.lookup · Salesforce · 1 call','—',0.0000,'#6b6a65']
+  ];
+  const tot = TRACE.reduce((s,r)=>s+r[3],0);
+  const nonllm = TRACE.filter(r=>r[0]!=='LLM').reduce((s,r)=>s+r[3],0);
+  $('#trace').innerHTML = `
+    <div class="hint" style="margin-bottom:12px;">Request <code style="font-family:var(--mono);background:var(--surface-2);padding:2px 6px;border-radius:4px">req_8f31c0a4</code>
+      · Halden Group · Support Copilot · "why was invoice 88214 rejected?" · 11.4s wall clock</div>
+    ${TRACE.map(r=>`<div class="rowbar">
+      <div class="nm"><span class="chip neu" style="font-size:9.5px">${r[0]}</span></div>
+      <div style="flex:1;color:var(--text-2);font-size:12px">${r[1]}<span style="color:var(--muted);margin-left:8px">${r[2]}</span></div>
+      <div class="v">$${r[3].toFixed(4)}</div></div>`).join('')}
+    <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:13px;display:flex;gap:26px;flex-wrap:wrap">
+      <div><div class="hint">Total cost of this request</div><div style="font-size:19px;font-weight:670" class="num">$${tot.toFixed(4)}</div></div>
+      <div><div class="hint">Visible to an LLM gateway</div><div style="font-size:19px;font-weight:670" class="num">$${(tot-nonllm).toFixed(4)}</div></div>
+      <div><div class="hint">Invisible to it</div><div style="font-size:19px;font-weight:670;color:#e8956e" class="num">$${nonllm.toFixed(4)} <small style="font-size:12px;color:var(--muted)">(${(nonllm/tot*100).toFixed(0)}%)</small></div></div>
+      <div><div class="hint">Billed by</div><div style="font-size:19px;font-weight:670" class="num">6 vendors</div></div>
+    </div>`;
+}
+
+/* =========================================================
+   BOARD REPORT
+   ========================================================= */
+function renderBoard(){
+  const data = [['Feb',11.2],['Mar',12.9],['Apr',15.4],['May',17.9],['Jun',19.6],['Jul',21.4]];
+  const W=560,H=220,L=42,R=14,T=16,B=30;
+  const x = i => L + i*(W-L-R)/(data.length-1);
+  const y = v => T + (25-v)/25*(H-T-B);
+  const line = data.map((d,i)=>`${x(i).toFixed(1)},${y(d[1]).toFixed(1)}`).join(' ');
+  $('#cogsChart').innerHTML = `
+    ${[0,5,10,15,20,25].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#2c2c2a"/>
+      <text x="${L-8}" y="${y(v)+4}" fill="#8b8983" font-size="10" text-anchor="end">${v}%</text>`).join('')}
+    <line x1="${L}" x2="${W-R}" y1="${y(20)}" y2="${y(20)}" stroke="#e04b4b" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <text x="${L+8}" y="${y(20)-7}" fill="#e04b4b" font-size="10.5" font-weight="700">20% sustainability line</text>
+    <polygon points="${L},${y(0)} ${line} ${W-R},${y(0)}" fill="rgba(57,135,229,.13)"/>
+    <polyline points="${line}" fill="none" stroke="var(--s1)" stroke-width="2.4"/>
+    ${data.map((d,i)=>`<circle cx="${x(i)}" cy="${y(d[1])}" r="${i===data.length-1?5:3.4}"
+      fill="${i===data.length-1?'#e04b4b':'var(--s1)'}"/>
+      <text x="${x(i)}" y="${H-10}" fill="#8b8983" font-size="10" text-anchor="middle">${d[0]}</text>`).join('')}
+    <text x="${x(5)-6}" y="${y(21.4)-12}" fill="#fff" font-size="12" font-weight="700" text-anchor="end">21.4%</text>`;
+
+  const bench = [['p25','$0.19',0.19,'#3b3b39','#8b8983'],['p50 median','$0.31',0.31,'#3b3b39','#8b8983'],
+                 ['p75','$0.48',0.48,'#3b3b39','#8b8983'],['You · p78','$0.52',0.52,'#e04b4b','#fff']];
+  const BL = 74, bw = W-BL-R-52, bmax=0.6;
+  $('#benchChart').innerHTML = bench.map((b,i)=>{
+    const yy = T + i*44;
+    return `<text x="${BL-10}" y="${yy+22}" fill="${b[4]}" font-size="10.5" text-anchor="end" font-weight="${i===3?700:400}">${b[0]}</text>
+      <rect x="${BL}" y="${yy+8}" width="${bw}" height="20" rx="5" fill="#212120"/>
+      <rect x="${BL}" y="${yy+8}" width="${b[2]/bmax*bw}" height="20" rx="5" fill="${b[3]}"/>
+      <text x="${BL+b[2]/bmax*bw+9}" y="${yy+23}" fill="#fff" font-size="11" font-weight="650">${b[1]}</text>`;
+  }).join('') + `<text x="${BL}" y="${H-6}" fill="#8b8983" font-size="10">Cost per resolved request · 43 anonymised Series A–C cohort members</text>`;
+
+  const V = [
+    ['+','$31,400','Voice Agent minutes +42%','Sunfield Bank expanded the pilot from 3 to 11 branches on Jul 6. Contracted, expected, priced in.','var(--warn)'],
+    ['+','$12,900','Cobalt Retail retry loops','61% of Batch Enrichment calls were retries against a changed page layout. Not contracted, not priced in. Retry cap now enforced.','var(--crit)'],
+    ['+','$6,200','Model mix drift on Support Copilot','24% of traffic moved from gpt-4o-mini to claude-sonnet-4 after the Jul 8 prompt change. No one requested this; the router threshold shifted with prompt length.','var(--crit)'],
+    ['−','$9,800','Semantic cache hit rate 31% → 44%','Doc Extraction dedupe shipped Jul 11.','var(--good)'],
+    ['−','$4,100','Refused before execution','23 policy stops across 4 accounts.','var(--good)']
+  ];
+  $('#variance').innerHTML = V.map(v=>`<div style="display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--border-2)">
+      <div style="flex:none;width:22px;font-size:17px;font-weight:700;color:${v[4]}">${v[0]}</div>
+      <div style="flex:none;width:82px;font-weight:670;font-family:var(--mono);font-size:13px">${v[1]}</div>
+      <div style="min-width:0"><div style="font-weight:600">${v[2]}</div>
+        <div class="hint" style="margin-top:3px;line-height:1.5">${v[3]}</div></div>
+    </div>`).join('') +
+    `<div style="display:flex;gap:14px;padding:15px 0 2px;font-size:14px">
+      <div style="flex:none;width:22px"></div>
+      <div style="flex:none;width:82px;font-weight:750;font-family:var(--mono)">+$36,600</div>
+      <div style="font-weight:650">Net change vs June · <span style="color:var(--crit)">+23.4%</span>
+        <div class="hint" style="margin-top:3px">$19,100 of it — 52% — was neither contracted nor intended.</div></div>
+    </div>`;
+}
+
+/* =========================================================
+   PRESENTER NOTES (KR)
+   ========================================================= */
+const SCRIPT = {
+  live: `<span class="say">"지출을 결정하는 주체가 사람에서 모델로 넘어갔습니다."</span> 지금 보시는 건 월 $186K를 쓰는 스케일업의 실행 흐름입니다.
+    <b>왼쪽</b>은 모든 요청이 고객·기능·하위 호출까지 태깅되는 화면, <b>오른쪽</b>은 실행 <b>전에</b> 평가되는 예산 정책.
+    → <b>[⚡ Trigger runaway session]</b>을 누르세요. 폭주 감지 → 단계적 스로틀 → 실행 전 차단까지 15초. 차단 로그에는 <b>왜 막았는지</b>가 남습니다.
+    → 그 다음 <b>[👁 legacy billing view]</b>로 전환. "이게 오늘 대부분의 회사가 보는 화면입니다. 숫자 하나, 2주 늦게, LLM 벤더만."`,
+  econ: `<span class="say">"진짜 통증은 '얼마 나갔나'가 아니라 '왜 나갔는지 설명 못 한다'는 겁니다."</span>
+    42개 계정 중 <b>3곳이 적자</b>입니다. <b>Cobalt Retail 행을 클릭</b>하세요 — 요금 $21,000, AI 원가 $24,300, 마진 −15.7%.
+    <b>핵심 대사:</b> "이 회사는 이 고객을 팔수록 손해를 보고 있었고, 청구서 어디에도 그 사실이 안 적혀 있었습니다."
+    가격 책정·이사회 보고·투자 실사에 매달 필요한 <b>상시 니즈</b>라는 점을 여기서 못박으세요.`,
+  attr: `<span class="say">"AI 원가의 39%는 어떤 LLM 청구서에도 없습니다."</span> 경쟁 방어 슬라이드입니다.
+    LiteLLM·Portkey 같은 <b>LLM 게이트웨이는 파란 막대(61%)만 봅니다.</b> 음성·검색·크롤·벡터는 에이전트가 자율로 부르고 6개 벤더가 따로 청구합니다.
+    맨 아래 <b>단일 요청 분해</b>를 가리키며: "요청 하나에 $0.0649, 그중 $0.0260이 게이트웨이 시야 밖입니다. 이 40%가 우리가 서는 자리입니다."`,
+  board: `<span class="say">"이건 사고 났을 때만 켜는 도구가 아니라 월간 재무 루틴입니다."</span> 그래서 해지가 어렵습니다.
+    AI COGS 비중이 6개월 만에 11.2% → 21.4%로 <b>지속가능선 20%를 넘었습니다.</b>
+    오른쪽 <b>동종 벤치마크</b>가 해자입니다 — 고객이 늘수록 정확해지고, 후발주자는 트래픽 0에서 시작합니다.
+    맨 아래 변동 분석: <b>"증가분의 52%는 계약된 적도, 의도된 적도 없는 지출이었습니다."</b> 이 한 줄로 마무리하세요.`
+};
+function renderPresenter(){
+  $('#presKey').textContent = {live:'Live console',econ:'Unit economics',attr:'Cost attribution',board:'Board report'}[S.view];
+  $('#presTxt').innerHTML = SCRIPT[S.view];
+}
+$('#btnScript').addEventListener('click', ()=>{
+  S.pres=!S.pres; $('#presenter').classList.toggle('on',S.pres); $('#btnScript').classList.toggle('on',S.pres);
+  document.body.classList.toggle('pres-on',S.pres);
+  renderPresenter();
+});
+$('#presX').addEventListener('click', ()=>{ S.pres=false; $('#presenter').classList.remove('on');
+  $('#btnScript').classList.remove('on'); document.body.classList.remove('pres-on'); });
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+pushEvent('BLOCKED', `<b>Pine &amp; Co</b> · Voice Agent session refused — <b>$41 avoided</b>`,
+  `Policy <code>budget.customer.hard</code> at $2,400 / $2,400. Starter plan has no voice allowance; account flagged for re-pricing.`, '14:06:12');
+pushEvent('THROTTLED', `<b>Meridian Legal</b> · Doc Extraction moved to size-based routing`,
+  `Documents over 40 pages were running the frontier model on every page. Pages 1–3 now classify; the rest route to <code>gpt-4o-mini</code> unless flagged.`, '14:11:47');
+pushEvent('ALERT', `<b>Vertex Logistics</b> · projected to exceed contracted AI allowance on Jul 26`,
+  `Enrichment volume +11% MoM with no contract change. Account owner notified with the per-feature breakdown attached.`, '14:19:03');
+pushEvent('ROUTED', `<b>Arcadia Foods</b> · 1,204 requests auto-routed to <b>gemini-2.5-flash</b>`,
+  `Complexity below threshold. $312 saved today at −0.2% eval delta.`, '14:24:55');
+
+for(let i=0;i<5;i++) pushSession(randomSession());
+renderKpis(); renderMeters(); renderCustomers(); renderAttr(); renderBoard(); renderPresenter(); setPlay();
+$('#clock').textContent = 'Simulated clock · ' + clockStr() + ' PDT · day 19 of 31';
+setInterval(tick, 1400);
+</script>
+</body>
+</html>
