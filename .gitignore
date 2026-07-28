@@ -9,3 +9,6 @@ _class-materials/
 
 # 레포 자기 자신(중첩 방지) — Method A로 부모 폴더를 init하면 이 줄 삭제
 WTIA_AI_Cost_Gov/
+
+# 기각/보관용 (로컬 참고, 추적 안 함)
+_archive/
