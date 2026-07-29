@@ -3,6 +3,10 @@
     "perplexity": {
       "command": "zsh",
       "args": ["-c", "source ~/.zshenv && exec npx -y @perplexity-ai/mcp-server"]
+    },
+    "firecrawl": {
+      "command": "zsh",
+      "args": ["-c", "source ~/.zshenv && exec npx -y firecrawl-mcp"]
     }
   }
 }
