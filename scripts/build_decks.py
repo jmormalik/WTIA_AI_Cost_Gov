@@ -483,14 +483,14 @@ def add_shared_body(prs):
 
     # [16] Team
     content_slide(prs, "Team", "16",
-        "Team Kyber — technology × customer development, a 2-person core.",
+        "Team Kyber — a founder who reads both the P&L and the call stack.",
         [
-            ("Taewon — technology & product (agent orchestration · infrastructure).",),
-            ("Jaemin (Malik) — CEO · customer development · GTM · research.",),
+            ("Taewon Kim — CEO. Finance × Computer Science double major → reads AI cost as a financial P&L AND understands the agent call system that generates it = founder-market fit for cost governance.", TEXT, True),
+            ("Prior founder — ran 'Nemo Scan', a book-scanning venture, through the full startup cycle. Not a first-timer.", ACCENT2, False),
+            ("Jaemin Yoo (Malik) — Co-founder · technical originator.",),
             ("(Advisors & design-partner relationships added as secured.)", MUTED, False),
-            ("⚠  Confirm role split — deck vs. memory mismatch on who is CEO; align before the pitch.", WARN, False),
         ],
-        "Keep it short. One line on 'why us' to be filled by the team. Resolve the Team-slide role inconsistency before the pitch.")
+        "Roles RESOLVED (8/3): Taewon Kim = CEO (finance×CS, prior founder Nemo Scan, customer dev/GTM), Jaemin Yoo (Malik) = Co-founder / technical originator. Lead with founder-market fit — finance+CS is exactly the two lenses cost governance needs. ⚠ Jaemin's personal 'why us' line still TBD (per CEO).")
 
 # =====================================================================
 # VERSION A — Pure Market Shift
