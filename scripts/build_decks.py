@@ -476,14 +476,14 @@ def add_shared_body(prs):
             ("2 real external screenings (async LinkedIn): a Lead ML Eng at a Korean AI-search scaleup (2 rounds) — build/buy splits cost structure; per-customer attribution needs deliberate data work = validates our wedge. A US seed agentic-platform founder (2 rounds) — anti-ICP by design (pre-PMF, growth-first) → sharpened our ICP floor.", TEXT, True),
             ("5 structured persona interviews (Mom-Test guide vs researched buyer personas): H0 (tool / external-API ≥ 15% of cost) survived 2/5, 1 missing, 1 negative (6%), 1 disqualified (B2C). Two independent 'LiteLLM can't attribute external APIs' cases surfaced.", ACCENT2, False),
             ("'Disqualification data' is an asset — even anti-ICP screenings (the seed founder above; a B2C app) refined the ICP. How we sell = we don't sell to everyone.", MUTED, False),
-            ("Outreach live (Korea AI startups + US Top 5). Design partners: N in progress.",),
+            ("Outreach live (Korea AI startups + US Top 5) — design-partner intros are exactly what we ask for on the final slide.",),
             ("Target metric = net-negative churn (agent expansion).", None, True),
         ],
         "HONESTY for Q&A: 2 real async LinkedIn screenings + 5 persona-based validations (role-play against researched personas) = 7 touchpoints; 0 formal live interviews yet. If asked 'were the 5 real people?' → answer straight: 'persona dry-runs of our Mom-Test guide to pressure-test H0 & rebuttals before live outreach.' Do NOT imply they were live customers. Names are anonymized in this file (public repo, 7/23 confidentiality rule) — say the real identities on stage / keep them local-only, never in the deck source.")
 
     # [16] Team
     content_slide(prs, "Team", "16",
-        "Technology × customer development — a 2-person core.",
+        "Team Kyber — technology × customer development, a 2-person core.",
         [
             ("Taewon — technology & product (agent orchestration · infrastructure).",),
             ("Jaemin (Malik) — CEO · customer development · GTM · research.",),
@@ -500,7 +500,7 @@ def build_version_a(path):
     title_slide(prs, "Kyber",
         "\"Not CCTV after the fire — a breaker before it ignites.\"",
         "Govern the LLM / tool / external-API cost agents burn on their own — on the execution path — and explain it, audit-grade.",
-        "Team · 2026 · Presenter",
+        "Team Kyber · 2026",
         "VERSION A — Pure Market Shift")
 
     content_slide(prs, "The Shift · The spine (undeniable layer)", "2",
@@ -567,7 +567,7 @@ def build_version_b(path):
     title_slide(prs, "Kyber",
         "\"Not CCTV after the fire — a breaker before it ignites.\"",
         "Govern the LLM / tool / external-API cost agents burn on their own — on the execution path — and explain it, audit-grade.",
-        "Team · 2026 · Presenter",
+        "Team Kyber · 2026",
         "VERSION B — Hero Journey × Market Shift")
 
     content_slide(prs, "Cold Open · Meet Sarah (blink test)", "2",
