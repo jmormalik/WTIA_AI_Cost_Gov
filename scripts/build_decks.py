@@ -142,13 +142,13 @@ def chart_tam_sam_som(slide):
     _label(slide, cx-Inches(1.6), Inches(2.55), Inches(3.2), Inches(0.5),
            "TAM", 15, ACCENT2, bold=True, align=PP_ALIGN.CENTER)
     _label(slide, cx-Inches(1.6), Inches(2.90), Inches(3.2), Inches(0.4),
-           "$0.5–1.8B  (2026)", 12, TEXT, align=PP_ALIGN.CENTER)
+           "$0.5–1.5B  (2026)", 12, TEXT, align=PP_ALIGN.CENTER)
     _label(slide, cx-Inches(1.5), Inches(3.55), Inches(3.0), Inches(0.4),
-           "SAM  $0.3–0.6B", 13, TEXT, bold=True, align=PP_ALIGN.CENTER)
+           "SAM  $0.24–0.45B", 13, TEXT, bold=True, align=PP_ALIGN.CENTER)
     _label(slide, cx-Inches(0.85), Inches(4.28), Inches(1.7), Inches(0.6),
            "SOM", 13, BG, bold=True, align=PP_ALIGN.CENTER)
     _label(slide, cx-Inches(1.0), Inches(4.62), Inches(2.0), Inches(0.4),
-           "$1.5–4.5M ARR", 10, BG, bold=True, align=PP_ALIGN.CENTER)
+           "$1.0–3.6M ARR", 10, BG, bold=True, align=PP_ALIGN.CENTER)
     _label(slide, Inches(6.95), Inches(6.75), Inches(5.6), Inches(0.4),
            "3-yr, not to scale  ·  main lens = governed AI spend × ~1–2% take-rate", 10, MUTED, align=PP_ALIGN.CENTER)
 
@@ -211,6 +211,80 @@ def chart_cost_bar(slide):
         _label(slide, Inches(9.6), y, Inches(2.6), Inches(0.35), val, 12, MUTED)
     _label(slide, Inches(7.05), Inches(6.75), Inches(5.4), Inches(0.4),
            "Search + DB = $47.8K nobody attributes to the agent that spent it.", 10, ACCENT2, align=PP_ALIGN.LEFT)
+
+def _draw_feature_matrix(slide):
+    """Competitive feature comparison table drawn with native shapes."""
+    tl  = Inches(0.65)
+    tt  = Inches(2.1)
+    fcw = Inches(2.8)
+    ccw = Inches(1.85)
+    rh  = Inches(0.58)
+
+    ROW_A  = RGBColor(0x12, 0x1B, 0x26)
+    ROW_B  = RGBColor(0x16, 0x21, 0x2E)
+    KY_COL = RGBColor(0x0C, 0x27, 0x2E)
+
+    # header row
+    _rect(slide, int(tl), int(tt), int(fcw), int(rh), PANEL)
+    hdrs = ["Langfuse", "CloudZero", "LiteLLM", "SatGate ❂", "Kyber"]
+    for i, hdr in enumerate(hdrs):
+        x   = int(tl + fcw + i * ccw)
+        kyb = (i == len(hdrs) - 1)
+        _rect(slide, x, int(tt), int(ccw), int(rh), ACCENT2 if kyb else PANEL)
+        _label(slide, x + int(Inches(0.05)), int(tt), int(ccw - Inches(0.1)), int(rh),
+               hdr, 10, BG if kyb else MUTED, bold=kyb,
+               align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+
+    # data rows
+    T, P, X = "✓", "~", "✗"
+    rows = [
+        ("LLM cost tracking",        [T, T, T, P, T]),
+        ("Pre-execution blocking",   [X, X, T, P, T]),
+        ("Non-LLM tool attribution", [P, X, X, P, T]),
+        ("Per-customer COGS",        [X, P, X, P, T]),
+        ("Runaway loop detection",   [X, X, X, X, T]),
+    ]
+    for ri, (feat, vals) in enumerate(rows):
+        y      = int(tt + rh * (ri + 1))
+        row_bg = ROW_A if ri % 2 == 0 else ROW_B
+        _rect(slide, int(tl), y, int(fcw), int(rh), row_bg)
+        _label(slide, int(tl + Inches(0.16)), y,
+               int(fcw - Inches(0.2)), int(rh),
+               feat, 13, TEXT, align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR.MIDDLE)
+        for ci, val in enumerate(vals):
+            x   = int(tl + fcw + ci * ccw)
+            kyb = (ci == len(vals) - 1)
+            _rect(slide, x, y, int(ccw), int(rh), KY_COL if kyb else row_bg)
+            col  = (ACCENT if kyb else ACCENT2) if val == T else (WARN if val == P else MUTED)
+            size = 22 if val == T else 18
+            _label(slide, x, y, int(ccw), int(rh),
+                   val, size, col, bold=(val == T),
+                   align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+
+    # footnote
+    _label(slide, int(tl), int(tt + rh * 6 + Inches(0.1)), Inches(12.0), Inches(0.3),
+           "❂ SatGate = pre-launch  ·  ~ = partial / claimed  ·"
+           "  Langfuse = Langfuse/Helicone  ·  CloudZero = CloudZero/Vantage  ·  source: public docs 2026-07",
+           9, MUTED)
+
+
+def feature_matrix_slide(prs):
+    """Full-width competitive feature comparison table slide."""
+    s = _blank(prs)
+    _accent_bar(s)
+    _kicker(s, "Why Kyber · Feature Comparison", "11")
+    tb, tf = _box(s, Inches(0.95), Inches(1.15), Inches(11.6), Inches(0.8))
+    _set(tf.paragraphs[0],
+         "Every competitor stops short on at least one axis. We don’t.",
+         24, TEXT, bold=True)
+    _draw_feature_matrix(s)
+    _notes(s,
+           "Feature matrix. Row 1 (LLM tracking) = table stakes — everyone has it, shows honesty. "
+           "Rows 2-5 = our wedge. Key: runaway loop detection = NOBODY. "
+           "Don’t claim we’re the only ones attributing cost — FinOps does per-unit for cloud. "
+           "Our intersection = rows 3+4+2 together. Source: Competitor-Analysis/기능-비교-매트릭스.md")
+    return s
+
 
 def chart_hockey(slide):
     pl, pr = int(Inches(7.55)), int(Inches(12.25))
@@ -319,27 +393,27 @@ def add_shared_body(prs):
 
     # [8] Customer
     content_slide(prs, "Customer · Who Buys", "8",
-        "Can't build like Meta — but far more spend & audit pressure than a startup.",
+        "Sell to the AI-native scaleups we reach now — ride the non-AI-native wave that can't build it.",
         [
-            ("Paid target: mid-market / scale-up B2B — $50K–$500K/mo AI spend, 50–300 people, Series A–C. Not big enough to staff an infra team → can't build, must buy.", TEXT, True),
-            ("Why B2B: per-customer unit cost is a B2B need (customer = contract). B2C rolls cost up by category — a B2B CTO must defend margin per account. (An ML lead we spoke with framed it exactly this way.)", ACCENT2, True),
-            ("Tooling / spend = 1–3% (clear ROI). Skips the death valley (small = negative ROI / enterprise = builds its own). Buyer = CTO, champion = AI lead, finance = influencer.",),
-            ("Korean AI startups = free design partners (data & references); paid = US mid-market.", MUTED, False),
-            ("⚠  Bet, not fact: 'can't build → must buy' + the spend threshold & buyer are what we are validating in interviews.", WARN, False),
+            ("Beachhead (paid now): AI-native scaleup B2B — $50K–$500K/mo AI spend, 50–300 people, Series A–C, high tool / external-API share. They own their execution path → our pre-execution control fits, and they're reachable for design partners.", TEXT, True),
+            ("Why start here: this is where our evidence, demo & first real signal (an ML lead at an AI-search company) already point — and where the product coheres end to end.", ACCENT2, True),
+            ("Expansion wave: non-AI-native mid-market in AX (logistics, manufacturing, finance) — $100K+/mo, 3+ vendors. No AI-engineering DNA → structurally can't build → the 'build it yourself' rebuttal dies, and the population dwarfs AI-natives.",),
+            ("Buyer = CTO (economic), champion = AI / data-ops lead, finance = influencer. Per-customer COGS = a B2B need (customer = contract). Korea AI startups = free design partners.", MUTED, False),
+            ("⚠  Bet, not fact: spend threshold, buyer, and the non-AI-native 'can't build' claim = validating in interviews.", WARN, False),
         ],
-        "This slide pre-empts two rebuttals ('just buy tokens' / 'build it yourself'). Label the 'can't build' load-bearing claim as a ⚠ falsifiable bet, and pre-empt the Liner counter — 'estimable ≠ audit-grade attribution'. B2B/per-customer rationale added 7/29.")
+        "A-LED BLEND (CEO decision 8/3): sell to reachable AI-native scaleups now; ride the non-AI-native wave as expansion. Pre-empts 'just buy tokens' ($50K+ spend) & 'build it yourself' — AI-native answer = buy-vs-build ROI + cross-vendor + audit-grade + peer-benchmark data they can't replicate; and the rebuttal structurally dies as we expand to non-AI-native (no AI-eng DNA). Source: ICP/ICP.md.")
 
     # [9] Market  -- TAM/SAM/SOM concentric circles
     content_slide_chart(prs, "Market · TAM / SAM / SOM", "9",
-        "Korea is the wedge; the market is global agent infra. Bet the slope, not the size.",
+        "Beachhead = reachable AI-native scaleups. Slope = the non-AI-native wave that can't build it. Bet the slope.",
         [
-            ("Lens A (governed AI spend × ~1–2% take-rate) = main; Lens B (AI FinOps + LLMOps) = cross-check. CAGR ~20%.",),
-            ("ACV $30K = median of competitor mid-market ACVs.",),
-            ("SOM engine: 50–150 US paid, seeded by the Korea wedge + US network.", ACCENT2, True),
-            ("⚠  SAM population (10–20K firms) = hypothesis, refined by interview screening pass-rate.", WARN, False),
+            ("TAM ≈ $0.5–1.5B (2026) → $2–6B (2030): 1–2% of $50–60B enterprise GenAI spend (top-down, segment-agnostic; FinOps take-rate anchor). CAGR ~20%.",),
+            ("SAM ≈ $0.24–0.45B → $0.8–1.8B: ICP-matching firms × ACV $30K — AI-native scaleups now, plus non-AI-native mid-market as it scales.", TEXT, True),
+            ("SOM (3yr) ≈ $1.0–3.6M ARR: reachable AI-native beachhead (Korea design partners → US paid), expanding into non-AI-native adjacents.", ACCENT2, True),
+            ("⚠  SAM population = hypothesis, refined by interview screening pass-rate.", WARN, False),
         ],
         chart_tam_sam_som,
-        "Never present the old LAM $80K as market size. Take-rate anchor CORRECTED to ~1-2% (deep research 7/28). We don't price on take-rate (per-agent) — it's a market-sizing sanity check only. Source: Market/TAM-SAM-SOM.md.")
+        "A-LED BLEND: near-term SOM = reachable AI-native scaleups (evidence + product coherence); the SLOPE = the far larger non-AI-native wave whose adoption curve is just starting → 3–4x by 2030 (they can't build it → ours to take). Never present the old LAM $80K as market size. We don't price on take-rate — sizing sanity check only. Source: Market/TAM-SAM-SOM.md.")
 
     # [10] Competition  -- 2x2 quadrant
     content_slide_chart(prs, "Competition", "10",
@@ -353,8 +427,11 @@ def add_shared_body(prs):
         chart_quadrant,
         "Reframed 7/29: don't say rivals 'can't see cost' — they show totals. HONESTY: FinOps already sells per-unit attribution, but for cloud/infra spend, after-the-fact, not the agent execution path. Our differentiation = the intersection. SatGate pre-launch = timing validation, not absent demand.")
 
-    # [11] Moat
-    content_slide(prs, "Moat", "11",
+    # [11] Feature comparison matrix
+    feature_matrix_slide(prs)
+
+    # [12] Moat
+    content_slide(prs, "Moat", "12",
         "What gets copied is features. What can't be caught up is data.",
         [
             ("Caching, routing, hard-limits = replicable in 6 months. Not a moat.", MUTED, False),
@@ -365,32 +442,35 @@ def add_shared_body(prs):
         ],
         "Timeline: entry (free credit-countdown wedge) → differentiation (unit economics + unit-price catalog) → moat (simulation accuracy + benchmark).")
 
-    # [12] BM / Pricing
-    content_slide(prs, "Business Model · Pricing", "12",
+    # [13] BM / Pricing
+    content_slide(prs, "Business Model · Pricing", "13",
         "A company that sells cost does not earn in proportion to the customer's cost.",
         [
-            ("Spend-proportional pricing ✗ (conflicts with the savings incentive). Price on per-agent (# of monitored agents) → incentives aligned.", TEXT, True),
-            ("3 tiers: Free (monitoring/blocking = commodity) → Growth ~$18K/yr (automated COGS report = paid entry) → Enterprise ~$60K/yr (audit-grade + in-path blocking). Blended ACV ~$30K.",),
-            ("Anchored in comps: LLM observability $5–25K (Langfuse/Helicone/Portkey) < us $30K < cloud FinOps $30–130K (CloudZero/Cloudability). Precedent for per-unit pricing: Agentforce, Datadog per-host.", MUTED, False),
-            ("Expansion = agents 20 → 40 → 80 grows revenue = net-negative churn.", ACCENT2, True),
-            ("Slogan: \"Sell the ledger before you sell the breaker.\"", None, True),
+            ("Spend-proportional pricing ✗ (conflicts with the savings incentive). Price on monitored agents — not API calls, not spend.", TEXT, True),
+            ("1 monitored agent = 1 distinct AI feature pipeline deployed in production (e.g., 'search-agent', 'summarizer', 'onboarding-bot'). Analogous to Datadog's per-host or APM per-service.", ACCENT2, False),
+            ("3 tiers: Free → Growth ~$18K/yr (automated COGS report) → Enterprise ~$60K/yr (audit-grade + in-path blocking). Blended ACV ~$30K.",),
+            ("Anchored in comps: LLM observability $5–25K < us $30K < cloud FinOps $30–130K. Precedents: Agentforce per-agent, Datadog per-host.", MUTED, False),
+            ("Expansion = as the customer ships more AI features, agent count grows → net-negative churn.", ACCENT2, True),
             ("⚠  Price figures are hypotheses to validate in interviews.", WARN, False),
         ],
-        "'Flat or usage?' → 'Subscription-led, but the usage axis is agent count, not spend.' ACV $30K = median of competitor mid-market ACVs (deep research 7/28). Detail: Solution/가격-재무-딥리서치-2026-07.md.")
+        "KEY DEFINITION for Q&A: 'monitored agent' = a named, registered agent pipeline (not an API request, not an invocation). "
+        "If judge asks 'what counts as one agent?' → 'Same as a Datadog host: each distinct AI workflow you deploy gets one Kyber agent registration.' "
+        "This avoids the 'does traffic spike my bill?' objection. "
+        "ACV $30K = median of competitor mid-market ACVs (deep research 7/28). Detail: Solution/가격-재무-딥리서치-2026-07.md.")
 
-    # [13] GTM
-    content_slide(prs, "Go-To-Market", "13",
+    # [14] GTM
+    content_slide(prs, "Go-To-Market", "14",
         "The champion bites for free; the CTO opens the wallet for COGS.",
         [
-            ("Landing: free Cost Autopsy report (off-path) → AI lead adopts bottom-up.",),
+            ("Landing: free Cost Autopsy report (off-path) → an AI / eng lead at an AI-native scaleup adopts bottom-up.",),
             ("Conversion: at an incident or credit burn-out, the champion pitches the CTO paid → land with COGS & margin reports.",),
-            ("Market order: Korea (free design partners / validation) → US mid-market (paid).", ACCENT2, True),
+            ("Market order: Korea AI startups (free design partners / validation) → US AI-native scaleups (paid beachhead) → non-AI-native mid-market expansion (logistics-first).", ACCENT2, True),
             ("Blocker pre-empt: to IT/legal — 'metadata only + cross-vendor independent audit.'",),
         ],
-        "Trust Ladder steps 1→2→3 ARE the GTM expansion path. Based on the stakeholder-map action plan.")
+        "Trust Ladder steps 1→2→3 ARE the GTM expansion path. Beachhead = reachable AI-native scaleups (evidence + product coherence); non-AI-native mid-market (logistics-first) is the expansion where 'build it yourself' dies. Based on the stakeholder-map action plan.")
 
-    # [14] Traction
-    content_slide(prs, "Traction", "14",
+    # [15] Traction
+    content_slide(prs, "Traction", "15",
         "In place of traction, how precisely we've narrowed the problem — and our first real signal.",
         [
             ("How we sell = we don't sell to everyone. A discipline that quickly filters anti-ICP.", TEXT, True),
@@ -401,8 +481,8 @@ def add_shared_body(prs):
         ],
         "Don't hide the 0 formal interviews — frame as 'building pricing on data.' Fill with real interview/design-partner counts before 8/6.")
 
-    # [15] Team
-    content_slide(prs, "Team", "15",
+    # [16] Team
+    content_slide(prs, "Team", "16",
         "Technology × customer development — a 2-person core.",
         [
             ("Taewon — technology & product (agent orchestration · infrastructure).",),
@@ -465,7 +545,7 @@ def build_version_a(path):
     add_shared_body(prs)
 
     # [16] Vision / Ask -- hockey stick
-    content_slide_chart(prs, "Vision · Ask", "16",
+    content_slide_chart(prs, "Vision · Ask", "17",
         "As agents grow, revenue bends into a curve.",
         [
             ("Revenue only (no cost/net income). Engine = new logos + agent expansion.", MUTED, False),
@@ -533,7 +613,7 @@ def build_version_b(path):
     add_shared_body(prs)
 
     # [16] Vision / Ask -- hockey stick
-    content_slide_chart(prs, "Vision · Ask", "16",
+    content_slide_chart(prs, "Vision · Ask", "17",
         "As agents grow, revenue bends into a curve.",
         [
             ("Revenue only (no cost/net income). Engine = new logos + agent expansion.", MUTED, False),
