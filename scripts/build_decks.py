@@ -2,7 +2,7 @@
 """Build two English pitch decks (A: Pure Market Shift, B: Hero x Market Shift).
 
 Charts are drawn with native python-pptx shapes (no matplotlib) so they stay
-editable vectors and match the dark theme exactly. 4 visuals added 2026-07-31:
+editable vectors and match the light theme exactly. 4 visuals added 2026-07-31:
   - slide 9  Market      -> TAM/SAM/SOM concentric circles
   - slide 10 Competition -> 2x2 quadrant (after-the-fact<->pre-exec x visibility<->attribution)
   - villain slide        -> 41% non-LLM cost-composition bar
@@ -15,19 +15,19 @@ from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 
-# ---- palette ----
-BG      = RGBColor(0x0E, 0x14, 0x1B)   # near-black navy
-PANEL   = RGBColor(0x16, 0x20, 0x2B)
-ACCENT  = RGBColor(0xFF, 0x6B, 0x35)   # breaker/fire orange
-ACCENT2 = RGBColor(0x35, 0xC9, 0xC9)   # teal
-TEXT    = RGBColor(0xE8, 0xEC, 0xF1)
-MUTED   = RGBColor(0x9A, 0xA7, 0xB4)
-WARN    = RGBColor(0xF2, 0xC1, 0x4E)   # amber for hypotheses
-GREY    = RGBColor(0x4A, 0x55, 0x60)   # LLM band (commodity grey)
-RING1   = RGBColor(0x12, 0x20, 0x2B)   # TAM fill
-RING2   = RGBColor(0x17, 0x32, 0x3C)   # SAM fill
-QHILITE = RGBColor(0x14, 0x30, 0x3A)   # winning quadrant fill
-AREA    = RGBColor(0x12, 0x3A, 0x40)   # hockey area fill
+# ---- palette (light theme — white background) ----
+BG      = RGBColor(0xFF, 0xFF, 0xFF)   # white background
+PANEL   = RGBColor(0xED, 0xF0, 0xF3)   # light grey panel
+ACCENT  = RGBColor(0xEA, 0x5B, 0x2B)   # breaker/fire orange (deepened for white bg)
+ACCENT2 = RGBColor(0x0E, 0x8A, 0x8A)   # deep teal (readable on white)
+TEXT    = RGBColor(0x1B, 0x22, 0x2B)   # near-black slate
+MUTED   = RGBColor(0x5E, 0x6A, 0x76)   # medium slate (secondary text)
+WARN    = RGBColor(0xB5, 0x82, 0x0A)   # dark amber for hypotheses
+GREY    = RGBColor(0xC4, 0xCA, 0xD0)   # LLM band (commodity light grey)
+RING1   = RGBColor(0xEA, 0xF0, 0xF2)   # TAM fill (very light)
+RING2   = RGBColor(0xCF, 0xE9, 0xE9)   # SAM fill (light teal)
+QHILITE = RGBColor(0xDC, 0xF2, 0xEE)   # winning quadrant fill (light teal)
+AREA    = RGBColor(0xD6, 0xEF, 0xEF)   # hockey area fill (light teal)
 
 W, H = Inches(13.333), Inches(7.5)
 
@@ -220,9 +220,9 @@ def _draw_feature_matrix(slide):
     ccw = Inches(1.85)
     rh  = Inches(0.58)
 
-    ROW_A  = RGBColor(0x12, 0x1B, 0x26)
-    ROW_B  = RGBColor(0x16, 0x21, 0x2E)
-    KY_COL = RGBColor(0x0C, 0x27, 0x2E)
+    ROW_A  = RGBColor(0xF7, 0xF8, 0xFA)   # light zebra row
+    ROW_B  = RGBColor(0xEC, 0xEF, 0xF2)   # light zebra row (alt)
+    KY_COL = RGBColor(0xDD, 0xF1, 0xF0)   # Kyber column tint (light teal)
 
     # header row
     _rect(slide, int(tl), int(tt), int(fcw), int(rh), PANEL)
