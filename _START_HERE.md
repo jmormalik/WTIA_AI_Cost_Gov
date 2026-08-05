@@ -148,6 +148,7 @@ Below: every tracked file, what it is, and when to open it. Open a file only whe
 - `스토리라인-통합-Problem-Solution.md` — pitch Problem→Solution slide flow (slides 3–8; COGS-lead, savings as by-product, tech reworded to defensible terms).
 - `슬라이드-BM-가격.md` — BM·가격·재무 slide copy (sits after Moat slide 8; per-agent model + pricing card + hockey-stick finance + pricing rebuttals).
 - `Pitch/MENTOR_QA_CONTEXT_for_Gemini.md` — English brief to paste into Gemini during live mentoring (translate a mentor question + recommend an answer in locked positioning).
+- `Pitch/셀프제작-슬라이드-가이드.md` — **CEO 셀프제작용 10~12장 슬라이드 가이드 (2026-08-05):** Market Shift 서사 순서 + 각 장 내용/비주얼/배치 + 참고 성공덱(Zuora 등) + [9] 3-카드 가격 상세(ASCII 목업·색/크기 스펙·"딱딱딱" 딜리버리). 직접 PPT 만들 때 참조.
 
 **`Competitor-Analysis/`**
 - `경쟁사-분석.md` — competitor profiles + funding. `기능-비교-매트릭스.md` — feature matrix (source of moat candidates). `전략-캔버스.md` — strategy canvas.
