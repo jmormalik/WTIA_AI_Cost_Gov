@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Hexagon } from "lucide-react";
 import { CostAttribution } from "@/components/kyber/CostAttribution";
 import { LiveBreaker } from "@/components/kyber/LiveBreaker";
@@ -11,9 +11,32 @@ const TABS = [
   { id: "report", label: "Cost Report" },
 ] as const;
 
+const THEMES = [
+  { id: "color", label: "Color", title: "Full color (dark)" },
+  { id: "mono", label: "B&W", title: "Black & white (dark)" },
+  { id: "light", label: "Light", title: "Black & white (light)" },
+] as const;
+
+type Theme = (typeof THEMES)[number]["id"];
+
+function useTheme() {
+  const [theme, setTheme] = useState<Theme>(() => {
+    const saved = typeof localStorage !== "undefined" ? localStorage.getItem("kyber-theme") : null;
+    return saved === "mono" || saved === "light" || saved === "color" ? saved : "color";
+  });
+  useEffect(() => {
+    const el = document.documentElement;
+    el.classList.remove("theme-mono", "theme-light");
+    if (theme === "mono") el.classList.add("theme-mono");
+    if (theme === "light") el.classList.add("theme-light");
+    localStorage.setItem("kyber-theme", theme);
+  }, [theme]);
+  return [theme, setTheme] as const;
+}
 
 export default function App() {
   const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("attribution");
+  const [theme, setTheme] = useTheme();
 
   return (
     <div className="ambient-canvas min-h-screen bg-background">
@@ -26,7 +49,7 @@ export default function App() {
               Cost governance
             </span>
           </div>
-          <nav className="flex items-center gap-1 rounded-lg border border-hairline bg-white/[0.03] p-1">
+          <nav className="flex items-center gap-1 rounded-lg border border-hairline bg-overlay-hover p-1">
             {TABS.map((t) => (
               <button
                 key={t.id}
@@ -34,7 +57,7 @@ export default function App() {
                 onClick={() => setTab(t.id)}
                 className={`rounded-md px-3 py-1.5 text-xs font-medium tracking-tight transition-colors ${
                   tab === t.id
-                    ? "bg-white/[0.10] text-foreground"
+                    ? "bg-overlay-strong text-foreground"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -43,6 +66,23 @@ export default function App() {
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-3 text-[11px] text-muted-foreground">
+            <div className="flex items-center rounded-lg border border-hairline bg-overlay-hover p-0.5">
+              {THEMES.map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  title={t.title}
+                  onClick={() => setTheme(t.id)}
+                  className={`rounded-md px-2 py-1 text-[10px] font-medium uppercase tracking-[0.1em] transition-colors ${
+                    theme === t.id
+                      ? "bg-overlay-strong text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
             <span className="rounded border border-cat-search/40 bg-cat-search/10 px-1.5 py-0.5 text-[10px] uppercase tracking-[0.12em] text-cat-search">
               Illustrative data
             </span>

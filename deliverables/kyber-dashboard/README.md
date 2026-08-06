@@ -18,7 +18,18 @@ Open http://localhost:5173
 - `src/components/kyber/LiveBreaker.tsx` — 1s-tick loop simulation + hard-limit kill switch
 - `src/components/kyber/CostReport.tsx` — **AI agent cost analysis report** (masthead, headline metrics, cost composition, per-account unit economics, findings, recommendations) — the screenshot-ready "Promised Land" deliverable
 - `src/data/kyber-seed.ts` — all hardcoded seed data
-- `src/styles.css` — design tokens (dark canvas, violet/teal accents)
+- `src/styles.css` — design tokens + theme variants (`.theme-mono`, `.theme-light`)
+
+## Themes
+
+A toggle in the header switches between three themes (persisted to `localStorage`):
+
+- **Color** — dark canvas, violet/teal accents (default)
+- **B&W** — grayscale accents on the dark canvas
+- **Light** — grayscale on a white canvas, for screenshotting into the light-themed deck
+
+Themes are driven entirely by CSS variables in `styles.css`. Surface overlays use semantic tokens
+(`overlay-hover/soft/strong`, `divider`, `well`) so the white theme has no leftover dark overlays.
 
 ## ⚠️ Illustrative data
 

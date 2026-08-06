@@ -170,7 +170,7 @@ export function CostAttribution() {
             </div>
           </div>
 
-          <div className="divide-y divide-white/[0.05]">
+          <div className="divide-y divide-divider">
             {sorted.map((cust) => {
               const total = totalOf(cust);
               const atLoss = total > cust.revenue;
@@ -180,7 +180,7 @@ export function CostAttribution() {
                   <button
                     type="button"
                     onClick={() => setOpen(isOpen ? null : cust.id)}
-                    className="w-full px-5 py-4 text-left transition-colors hover:bg-white/[0.03]"
+                    className="w-full px-5 py-4 text-left transition-colors hover:bg-overlay-hover"
                   >
                     <div className="flex items-center gap-3">
                       <ChevronRight
@@ -221,7 +221,7 @@ export function CostAttribution() {
                   </button>
 
                   {isOpen && (
-                    <div className="border-t border-hairline bg-black/25 px-5 py-4">
+                    <div className="border-t border-hairline bg-well px-5 py-4">
                       <div className="flex items-center justify-between">
                         <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
                           Itemized tasks · {cust.plan}
@@ -247,12 +247,12 @@ export function CostAttribution() {
                             <th className="pb-2 text-right font-medium">Cost</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-white/[0.05]">
+                        <tbody className="divide-y divide-divider">
                           {cust.tasks.map((t) => (
                             <tr key={t.id}>
                               <td className="py-2 pr-4 text-foreground">{t.name}</td>
                               <td className="py-2 pr-4">
-                                <span className="rounded border border-hairline bg-white/[0.04] px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">
+                                <span className="rounded border border-hairline bg-overlay-soft px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">
                                   {t.model}
                                 </span>
                               </td>

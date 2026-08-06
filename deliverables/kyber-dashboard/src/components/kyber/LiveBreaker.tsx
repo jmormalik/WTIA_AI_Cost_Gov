@@ -90,7 +90,7 @@ export function LiveBreaker() {
             <button
               type="button"
               onClick={() => (index === 0 ? reset() : setRunning((r) => !r))}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-hairline bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-white/[0.08]"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-hairline bg-overlay-soft px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-overlay-strong"
             >
               <Play className="h-3 w-3" />
               {running ? "Pause" : index === 0 ? "Run agent" : "Resume"}
@@ -117,7 +117,7 @@ export function LiveBreaker() {
             return (
               <div
                 key={i}
-                className="flex items-baseline gap-3 border-b border-white/[0.04] py-1.5 last:border-0"
+                className="flex items-baseline gap-3 border-b border-divider py-1.5 last:border-0"
               >
                 <span className="shrink-0 text-muted-foreground">{e.t}</span>
                 <span
@@ -195,7 +195,7 @@ export function LiveBreaker() {
                 setHardLimit((v) => !v);
                 setBlocked(false);
               }}
-              className={`relative h-6 w-11 shrink-0 rounded-full border border-hairline transition-colors ${hardLimit ? "bg-cat-db/70" : "bg-white/[0.08]"}`}
+              className={`relative h-6 w-11 shrink-0 rounded-full border border-hairline transition-colors ${hardLimit ? "bg-cat-db/70" : "bg-overlay-strong"}`}
             >
               <span
                 className={`absolute top-0.5 h-4 w-4 rounded-full bg-foreground transition-all ${hardLimit ? "left-6" : "left-1"}`}
@@ -237,7 +237,7 @@ export function LiveBreaker() {
 
 function Row({ k, v, mono }: { k: string; v: string; mono?: boolean }) {
   return (
-    <div className="flex items-baseline justify-between gap-3 border-b border-white/[0.05] pb-2 last:border-0">
+    <div className="flex items-baseline justify-between gap-3 border-b border-divider pb-2 last:border-0">
       <dt className="text-muted-foreground">{k}</dt>
       <dd className={`text-right text-foreground ${mono ? "font-mono text-[11px]" : "tabular-nums"}`}>
         {v}

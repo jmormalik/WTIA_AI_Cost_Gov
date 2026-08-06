@@ -208,7 +208,7 @@ export function CostReport() {
                 <th className="px-5 py-3 text-right font-medium">Margin %</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/[0.05]">
+            <tbody className="divide-y divide-divider">
               {ROWS.map((r) => (
                 <tr key={r.id} className={r.margin < 0 ? "bg-destructive/[0.06]" : ""}>
                   <td className="px-5 py-3">
@@ -274,7 +274,7 @@ export function CostReport() {
       {/* 5. Recommendations */}
       <section>
         <SectionTitle n="05" title="Recommendations" />
-        <ol className="panel divide-y divide-white/[0.05] p-1">
+        <ol className="panel divide-y divide-divider p-1">
           {[
             {
               t: "Reprice the two loss accounts",
