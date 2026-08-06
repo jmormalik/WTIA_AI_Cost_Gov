@@ -12,9 +12,9 @@ const TABS = [
 ] as const;
 
 const THEMES = [
-  { id: "color", label: "Color", title: "Full color (dark)" },
-  { id: "mono", label: "B&W", title: "Black & white (dark)" },
-  { id: "light", label: "Light", title: "Black & white (light)" },
+  { id: "color", label: "Dark", title: "Full color · dark" },
+  { id: "light", label: "Light", title: "Full color · light" },
+  { id: "mono", label: "B&W", title: "Black & white · dark" },
 ] as const;
 
 type Theme = (typeof THEMES)[number]["id"];

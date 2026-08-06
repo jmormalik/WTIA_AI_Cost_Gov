@@ -212,11 +212,11 @@
   --muted-foreground: oklch(0.45 0 0);
   --accent: oklch(0.93 0 0);
   --accent-foreground: oklch(0.2 0 0);
-  --destructive: oklch(0.32 0 0);
+  --destructive: oklch(0.55 0.2 25);
   --destructive-foreground: oklch(0.99 0 0);
   --border: oklch(0 0 0 / 12%);
   --input: oklch(0 0 0 / 16%);
-  --ring: oklch(0.4 0 0);
+  --ring: oklch(0.55 0.16 292);
   --surface: oklch(1 0 0 / 75%);
   --hairline: oklch(0 0 0 / 10%);
   --overlay-hover: oklch(0 0 0 / 4%);
@@ -224,9 +224,9 @@
   --overlay-strong: oklch(0 0 0 / 9%);
   --divider: oklch(0 0 0 / 8%);
   --well: oklch(0 0 0 / 4%);
-  --cat-llm: oklch(0.62 0 0);
-  --cat-search: oklch(0.34 0 0);
-  --cat-db: oklch(0.1 0 0);
+  --cat-llm: oklch(0.62 0.015 286);
+  --cat-search: oklch(0.55 0.19 292);
+  --cat-db: oklch(0.56 0.13 185);
 }
 
 :root.theme-light .ambient-canvas {
