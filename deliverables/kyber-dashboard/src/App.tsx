@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Hexagon } from "lucide-react";
 import { CostAttribution } from "@/components/kyber/CostAttribution";
 import { LiveBreaker } from "@/components/kyber/LiveBreaker";
+import { CostReport } from "@/components/kyber/CostReport";
 import { PERIOD } from "@/data/kyber-seed";
 
 const TABS = [
   { id: "attribution", label: "Cost Attribution" },
   { id: "breaker", label: "Live Breaker" },
+  { id: "report", label: "Cost Report" },
 ] as const;
 
 
@@ -40,15 +42,26 @@ export default function App() {
               </button>
             ))}
           </nav>
-          <div className="ml-auto text-[11px] text-muted-foreground">
-            Billing period <span className="text-foreground">{PERIOD}</span>
+          <div className="ml-auto flex items-center gap-3 text-[11px] text-muted-foreground">
+            <span className="rounded border border-cat-search/40 bg-cat-search/10 px-1.5 py-0.5 text-[10px] uppercase tracking-[0.12em] text-cat-search">
+              Illustrative data
+            </span>
+            <span>
+              Billing period <span className="text-foreground">{PERIOD}</span>
+            </span>
           </div>
         </div>
       </header>
 
       <main className="mx-auto max-w-[1400px] px-6 py-7">
         <h1 className="sr-only">Kyber AI agent cost governance dashboard</h1>
-        {tab === "attribution" ? <CostAttribution /> : <LiveBreaker />}
+        {tab === "attribution" ? (
+          <CostAttribution />
+        ) : tab === "breaker" ? (
+          <LiveBreaker />
+        ) : (
+          <CostReport />
+        )}
       </main>
     </div>
   );

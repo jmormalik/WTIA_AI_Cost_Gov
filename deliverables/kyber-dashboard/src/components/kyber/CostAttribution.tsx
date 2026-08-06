@@ -112,8 +112,9 @@ function Donut() {
       <p className="mt-5 flex items-start gap-2 border-t border-hairline pt-4 text-xs leading-relaxed text-muted-foreground">
         <Info className="mt-px h-3.5 w-3.5 shrink-0" />
         <span>
-          {Math.round(NON_LLM_SHARE * 100)}% of COGS never touches a model — it is tool and
-          retrieval spend that token dashboards do not see.
+          In this sample, {Math.round(NON_LLM_SHARE * 100)}% of COGS never touches a model — it is
+          tool and retrieval spend that token dashboards do not see. Illustrative figures, not a
+          market benchmark.
         </span>
       </p>
     </div>
